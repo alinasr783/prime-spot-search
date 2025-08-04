@@ -51,6 +51,8 @@ export const useAuth = (): AuthContextType => {
       }
 
       const adminData = { id: data.id, email: data.email };
+      
+      // Update state immediately
       setAdmin(adminData);
       localStorage.setItem('adminAuth', JSON.stringify(adminData));
       
