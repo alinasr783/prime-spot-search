@@ -84,9 +84,9 @@ const AdminDashboard = () => {
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-border/50">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-white rounded-full p-2 shadow-lg flex items-center justify-center">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full p-2 shadow-lg flex items-center justify-center">
                 <img 
                   src={inspireLogo} 
                   alt="شركة إنسباير العقارية" 
@@ -94,19 +94,20 @@ const AdminDashboard = () => {
                 />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-foreground">لوحة التحكم</h1>
-                <p className="text-sm text-muted-foreground">شركة إنسباير العقارية</p>
+                <h1 className="text-xl sm:text-2xl font-bold text-foreground">لوحة التحكم</h1>
+                <p className="text-xs sm:text-sm text-muted-foreground">شركة إنسباير العقارية</p>
               </div>
             </div>
             
-            <div className="flex items-center gap-4">
-              <div className="text-left">
-                <p className="text-sm font-medium text-foreground">مرحباً، {adminData.email}</p>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
+              <div className="text-left order-2 sm:order-1">
+                <p className="text-sm font-medium text-foreground break-all">{adminData.email}</p>
                 <p className="text-xs text-muted-foreground">مشرف النظام</p>
               </div>
-              <Button variant="outline" onClick={handleLogout}>
+              <Button variant="outline" onClick={handleLogout} className="order-1 sm:order-2 w-full sm:w-auto">
                 <LogOut className="w-4 h-4 ml-2" />
-                تسجيل الخروج
+                <span className="hidden sm:inline">تسجيل الخروج</span>
+                <span className="sm:hidden">خروج</span>
               </Button>
             </div>
           </div>
@@ -115,36 +116,36 @@ const AdminDashboard = () => {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold text-foreground mb-2">مرحباً بك في لوحة التحكم</h2>
-          <p className="text-muted-foreground">إدارة شاملة لموقع إنسباير العقارية</p>
+        <div className="mb-6 sm:mb-8">
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">مرحباً بك في لوحة التحكم</h2>
+          <p className="text-sm sm:text-base text-muted-foreground">إدارة شاملة لموقع إنسباير العقارية</p>
         </div>
 
         {/* Dashboard Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
           {dashboardItems.map((item) => (
             <Card 
               key={item.path}
-              className="hover:shadow-lg transition-all duration-200 cursor-pointer border-border/50"
+              className="hover:shadow-lg transition-all duration-200 cursor-pointer border-border/50 active:scale-95 sm:active:scale-100"
               onClick={() => navigate(item.path)}
             >
-              <CardHeader className="pb-3">
+              <CardHeader className="pb-3 px-4 sm:px-6 pt-4 sm:pt-6">
                 <div className="flex items-center gap-3">
-                  <div className={`w-12 h-12 ${item.color} rounded-lg flex items-center justify-center`}>
-                    <item.icon className="w-6 h-6 text-white" />
+                  <div className={`w-10 h-10 sm:w-12 sm:h-12 ${item.color} rounded-lg flex items-center justify-center`}>
+                    <item.icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </div>
-                  <CardTitle className="text-lg font-semibold">{item.title}</CardTitle>
+                  <CardTitle className="text-base sm:text-lg font-semibold leading-tight">{item.title}</CardTitle>
                 </div>
               </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">{item.description}</p>
+              <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{item.description}</p>
               </CardContent>
             </Card>
           ))}
         </div>
 
         {/* Statistics Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
           <Card className="border-border/50">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -214,7 +215,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* Quick Actions and Recent Activity */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           <Card className="lg:col-span-1">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">

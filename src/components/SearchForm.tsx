@@ -80,25 +80,25 @@ const SearchForm = ({ className, onSearch }: SearchFormProps) => {
   ];
 
   return (
-    <Card className={`p-8 bg-white/95 backdrop-blur-md shadow-2xl border-0 rounded-2xl max-w-4xl mx-auto ${className}`}>
-      <div className="text-center mb-8">
-        <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+    <Card className={`p-4 sm:p-6 lg:p-8 bg-white/95 backdrop-blur-md shadow-2xl border-0 rounded-2xl max-w-4xl mx-auto ${className}`}>
+      <div className="text-center mb-6 sm:mb-8">
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-3 sm:mb-4">
           ابحث عن عقارك المناسب
         </h2>
-        <p className="text-lg text-muted-foreground">
+        <p className="text-base sm:text-lg text-muted-foreground">
           اكتشف أفضل العقارات في مصر
         </p>
       </div>
 
       {/* الموقع - سطر كامل */}
-      <div className="mb-8">
-        <div className="space-y-3">
-          <label className="text-base font-bold text-foreground flex items-center gap-2">
-            <MapPin className="w-5 h-5 text-primary" />
+      <div className="mb-6 sm:mb-8">
+        <div className="space-y-2 sm:space-y-3">
+          <label className="text-sm sm:text-base font-bold text-foreground flex items-center gap-2">
+            <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
             المنطقة
           </label>
           <Select value={filters.location} onValueChange={(value) => handleInputChange("location", value)}>
-            <SelectTrigger className="h-14 text-right text-lg border-2 border-muted hover:border-primary transition-colors">
+            <SelectTrigger className="h-12 sm:h-14 text-right text-base sm:text-lg border-2 border-muted hover:border-primary transition-colors">
               <SelectValue placeholder="اختر المنطقة" />
             </SelectTrigger>
             <SelectContent className="max-h-60">
@@ -113,15 +113,15 @@ const SearchForm = ({ className, onSearch }: SearchFormProps) => {
       </div>
 
       {/* نوع العقار ونوع العرض - سطر واحد */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
         {/* نوع العقار */}
-        <div className="space-y-3">
-          <label className="text-base font-bold text-foreground flex items-center gap-2">
-            <Home className="w-5 h-5 text-primary" />
+        <div className="space-y-2 sm:space-y-3">
+          <label className="text-sm sm:text-base font-bold text-foreground flex items-center gap-2">
+            <Home className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
             نوع العقار
           </label>
           <Select value={filters.propertyType} onValueChange={(value) => handleInputChange("propertyType", value)}>
-            <SelectTrigger className="h-14 text-right text-lg border-2 border-muted hover:border-primary transition-colors">
+            <SelectTrigger className="h-12 sm:h-14 text-right text-base sm:text-lg border-2 border-muted hover:border-primary transition-colors">
               <SelectValue placeholder="نوع الوحدة" />
             </SelectTrigger>
             <SelectContent>
@@ -135,13 +135,13 @@ const SearchForm = ({ className, onSearch }: SearchFormProps) => {
         </div>
 
         {/* نوع العرض */}
-        <div className="space-y-3">
-          <label className="text-base font-bold text-foreground flex items-center gap-2">
-            <DollarSign className="w-5 h-5 text-primary" />
+        <div className="space-y-2 sm:space-y-3">
+          <label className="text-sm sm:text-base font-bold text-foreground flex items-center gap-2">
+            <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
             نوع العرض
           </label>
           <Select value={filters.priceType} onValueChange={(value) => handleInputChange("priceType", value)}>
-            <SelectTrigger className="h-14 text-right text-lg border-2 border-muted hover:border-primary transition-colors">
+            <SelectTrigger className="h-12 sm:h-14 text-right text-base sm:text-lg border-2 border-muted hover:border-primary transition-colors">
               <SelectValue placeholder="إيجار أو بيع" />
             </SelectTrigger>
             <SelectContent>
@@ -152,15 +152,15 @@ const SearchForm = ({ className, onSearch }: SearchFormProps) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
         {/* عدد غرف النوم */}
-        <div className="space-y-3">
-          <label className="text-base font-bold text-foreground flex items-center gap-2">
-            <Bed className="w-5 h-5 text-primary" />
+        <div className="space-y-2 sm:space-y-3">
+          <label className="text-sm sm:text-base font-bold text-foreground flex items-center gap-2">
+            <Bed className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
             غرف النوم
           </label>
           <Select value={filters.bedrooms} onValueChange={(value) => handleInputChange("bedrooms", value)}>
-            <SelectTrigger className="h-14 text-right text-lg border-2 border-muted hover:border-primary transition-colors">
+            <SelectTrigger className="h-12 sm:h-14 text-right text-base sm:text-lg border-2 border-muted hover:border-primary transition-colors">
               <SelectValue placeholder="عدد الغرف" />
             </SelectTrigger>
             <SelectContent>
@@ -174,13 +174,13 @@ const SearchForm = ({ className, onSearch }: SearchFormProps) => {
         </div>
 
         {/* عدد غرف الحمام */}
-        <div className="space-y-3">
-          <label className="text-base font-bold text-foreground flex items-center gap-2">
-            <Bath className="w-5 h-5 text-primary" />
+        <div className="space-y-2 sm:space-y-3">
+          <label className="text-sm sm:text-base font-bold text-foreground flex items-center gap-2">
+            <Bath className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
             غرف الحمام
           </label>
           <Select value={filters.bathrooms} onValueChange={(value) => handleInputChange("bathrooms", value)}>
-            <SelectTrigger className="h-14 text-right text-lg border-2 border-muted hover:border-primary transition-colors">
+            <SelectTrigger className="h-12 sm:h-14 text-right text-base sm:text-lg border-2 border-muted hover:border-primary transition-colors">
               <SelectValue placeholder="عدد الحمامات" />
             </SelectTrigger>
             <SelectContent>
@@ -193,8 +193,8 @@ const SearchForm = ({ className, onSearch }: SearchFormProps) => {
         </div>
 
         {/* السعر من */}
-        <div className="space-y-3">
-          <label className="text-base font-bold text-foreground">
+        <div className="space-y-2 sm:space-y-3">
+          <label className="text-sm sm:text-base font-bold text-foreground">
             السعر من (جنيه)
           </label>
           <Input 
@@ -202,13 +202,13 @@ const SearchForm = ({ className, onSearch }: SearchFormProps) => {
             placeholder="أقل سعر"
             value={filters.priceMin}
             onChange={(e) => handleInputChange("priceMin", e.target.value)}
-            className="h-14 text-right text-lg border-2 border-muted hover:border-primary transition-colors"
+            className="h-12 sm:h-14 text-right text-base sm:text-lg border-2 border-muted hover:border-primary transition-colors"
           />
         </div>
 
         {/* السعر إلى */}
-        <div className="space-y-3">
-          <label className="text-base font-bold text-foreground">
+        <div className="space-y-2 sm:space-y-3">
+          <label className="text-sm sm:text-base font-bold text-foreground">
             السعر إلى (جنيه)
           </label>
           <Input 
@@ -216,7 +216,7 @@ const SearchForm = ({ className, onSearch }: SearchFormProps) => {
             placeholder="أعلى سعر"
             value={filters.priceMax}
             onChange={(e) => handleInputChange("priceMax", e.target.value)}
-            className="h-14 text-right text-lg border-2 border-muted hover:border-primary transition-colors"
+            className="h-12 sm:h-14 text-right text-base sm:text-lg border-2 border-muted hover:border-primary transition-colors"
           />
         </div>
       </div>
@@ -225,9 +225,9 @@ const SearchForm = ({ className, onSearch }: SearchFormProps) => {
         <Button 
           variant="search"
           onClick={handleSearch}
-          className="w-full h-14 text-lg font-bold"
+          className="w-full h-12 sm:h-14 text-base sm:text-lg font-bold"
         >
-          <Search className="w-5 h-5 ml-2" />
+          <Search className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
           ابحث الآن
         </Button>
       </div>

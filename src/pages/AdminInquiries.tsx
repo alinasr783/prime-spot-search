@@ -123,9 +123,9 @@ const AdminInquiries = () => {
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-border/50">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-white rounded-full p-2 shadow-lg flex items-center justify-center">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full p-2 shadow-lg flex items-center justify-center">
                 <img 
                   src={inspireLogo} 
                   alt="شركة إنسباير العقارية" 
@@ -133,14 +133,15 @@ const AdminInquiries = () => {
                 />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-foreground">إدارة الاستفسارات</h1>
-                <p className="text-sm text-muted-foreground">شركة إنسباير العقارية</p>
+                <h1 className="text-xl sm:text-2xl font-bold text-foreground">إدارة الاستفسارات</h1>
+                <p className="text-xs sm:text-sm text-muted-foreground">شركة إنسباير العقارية</p>
               </div>
             </div>
             
-            <Button variant="outline" onClick={handleBack}>
+            <Button variant="outline" onClick={handleBack} className="w-full sm:w-auto">
               <ArrowLeft className="w-4 h-4 ml-2" />
-              العودة للوحة التحكم
+              <span className="hidden sm:inline">العودة للوحة التحكم</span>
+              <span className="sm:hidden">العودة</span>
             </Button>
           </div>
         </div>
@@ -148,7 +149,7 @@ const AdminInquiries = () => {
 
       <main className="container mx-auto px-4 py-8">
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center gap-4">
@@ -215,8 +216,8 @@ const AdminInquiries = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex gap-4">
-              <div className="flex-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
                 <label className="text-sm font-medium mb-2 block">تصفية حسب الحالة</label>
                 <Select value={filter} onValueChange={setFilter}>
                   <SelectTrigger>
@@ -231,7 +232,7 @@ const AdminInquiries = () => {
                 </Select>
               </div>
               
-              <div className="flex-1">
+              <div>
                 <label className="text-sm font-medium mb-2 block">ترتيب حسب</label>
                 <Select value={sortBy} onValueChange={setSortBy}>
                   <SelectTrigger>
@@ -253,21 +254,21 @@ const AdminInquiries = () => {
           {sortedInquiries.map((inquiry) => (
             <Card key={inquiry.id} className="transition-shadow hover:shadow-md">
               <CardContent className="p-6">
-                <div className="flex items-start justify-between mb-4">
+                <div className="flex flex-col sm:flex-row items-start justify-between gap-4 mb-4">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
                       <MessageSquare className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-lg">{inquiry.name}</h3>
-                      <p className="text-sm text-muted-foreground">
+                      <h3 className="font-semibold text-base sm:text-lg">{inquiry.name}</h3>
+                      <p className="text-xs sm:text-sm text-muted-foreground">
                         نوع الاستفسار: {inquiry.inquiry_type}
                       </p>
                     </div>
                   </div>
                   
-                  <div className="flex items-center gap-2">
-                    <Badge className={getStatusColor(inquiry.status)}>
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full sm:w-auto">
+                    <Badge className={`${getStatusColor(inquiry.status)} text-xs`}>
                       {getStatusIcon(inquiry.status)}
                       <span className="mr-1">{inquiry.status}</span>
                     </Badge>
@@ -275,7 +276,7 @@ const AdminInquiries = () => {
                       value={inquiry.status}
                       onValueChange={(value) => updateInquiryStatus(inquiry.id, value)}
                     >
-                      <SelectTrigger className="w-32">
+                      <SelectTrigger className="w-full sm:w-32">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -287,7 +288,7 @@ const AdminInquiries = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-4">
                   {inquiry.phone && (
                     <div className="flex items-center gap-2 text-sm">
                       <Phone className="w-4 h-4 text-muted-foreground" />
@@ -314,7 +315,7 @@ const AdminInquiries = () => {
                 </div>
 
                 {inquiry.property_id && (
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
                     <p className="text-sm text-muted-foreground">
                       متعلق بعقار: {inquiry.property_id}
                     </p>
@@ -322,6 +323,7 @@ const AdminInquiries = () => {
                       size="sm"
                       variant="outline"
                       onClick={() => navigate(`/property/${inquiry.property_id}`)}
+                      className="w-full sm:w-auto"
                     >
                       <Eye className="w-4 h-4 ml-2" />
                       عرض العقار

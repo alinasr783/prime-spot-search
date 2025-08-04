@@ -62,10 +62,10 @@ const PropertyCard = ({ property, showFeaturedBadge = false }: PropertyCardProps
         )}
       </div>
 
-      <CardContent className="p-6">
+      <CardContent className="p-4 sm:p-6">
         {/* Property Info */}
         <div className="mb-4">
-          <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
+          <h3 className="text-lg sm:text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors leading-tight">
             {property.title}
           </h3>
           

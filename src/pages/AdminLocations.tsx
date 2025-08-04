@@ -152,9 +152,9 @@ const AdminLocations = () => {
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-border/50">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-white rounded-full p-2 shadow-lg flex items-center justify-center">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full p-2 shadow-lg flex items-center justify-center">
                 <img 
                   src={inspireLogo} 
                   alt="شركة إنسباير العقارية" 
@@ -162,19 +162,21 @@ const AdminLocations = () => {
                 />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-foreground">إدارة المواقع</h1>
-                <p className="text-sm text-muted-foreground">شركة إنسباير العقارية</p>
+                <h1 className="text-xl sm:text-2xl font-bold text-foreground">إدارة المواقع</h1>
+                <p className="text-xs sm:text-sm text-muted-foreground">شركة إنسباير العقارية</p>
               </div>
             </div>
             
-            <div className="flex items-center gap-4">
-              <Button variant="outline" onClick={handleBack}>
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
+              <Button variant="outline" onClick={handleBack} className="order-2 sm:order-1">
                 <ArrowLeft className="w-4 h-4 ml-2" />
-                العودة للوحة التحكم
+                <span className="hidden sm:inline">العودة للوحة التحكم</span>
+                <span className="sm:hidden">العودة</span>
               </Button>
-              <Button onClick={() => setShowAddForm(true)}>
+              <Button onClick={() => setShowAddForm(true)} className="order-1 sm:order-2">
                 <Plus className="w-4 h-4 ml-2" />
-                إضافة موقع جديد
+                <span className="hidden sm:inline">إضافة موقع جديد</span>
+                <span className="sm:hidden">إضافة موقع</span>
               </Button>
             </div>
           </div>
@@ -183,7 +185,7 @@ const AdminLocations = () => {
 
       <main className="container mx-auto px-4 py-8">
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center gap-4">
@@ -237,7 +239,7 @@ const AdminLocations = () => {
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   <div>
                     <Label htmlFor="name">اسم الموقع</Label>
                     <Input
@@ -319,7 +321,7 @@ const AdminLocations = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {govLocations.map((location) => (
                     <div 
                       key={location.id} 

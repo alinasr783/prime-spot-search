@@ -102,7 +102,7 @@ const Properties = () => {
           </div>
           
           {/* Results Count & Controls */}
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-8">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
             <div className="flex items-center gap-4">
               <Badge variant="secondary" className="text-lg px-4 py-2">
                 {properties.length} عقار متاح
@@ -151,7 +151,7 @@ const Properties = () => {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
           {/* Filters Sidebar */}
           <div className={`lg:col-span-1 ${showFilters ? 'block' : 'hidden lg:block'}`}>
             <SearchFilters

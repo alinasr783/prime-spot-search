@@ -193,9 +193,9 @@ const AdminProperties = () => {
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-border/50">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-white rounded-full p-2 shadow-lg flex items-center justify-center">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full p-2 shadow-lg flex items-center justify-center">
                 <img 
                   src={inspireLogo} 
                   alt="شركة إنسباير العقارية" 
@@ -203,19 +203,21 @@ const AdminProperties = () => {
                 />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-foreground">إدارة العقارات</h1>
-                <p className="text-sm text-muted-foreground">شركة إنسباير العقارية</p>
+                <h1 className="text-xl sm:text-2xl font-bold text-foreground">إدارة العقارات</h1>
+                <p className="text-xs sm:text-sm text-muted-foreground">شركة إنسباير العقارية</p>
               </div>
             </div>
             
-            <div className="flex items-center gap-4">
-              <Button variant="outline" onClick={handleBack}>
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
+              <Button variant="outline" onClick={handleBack} className="order-2 sm:order-1">
                 <ArrowLeft className="w-4 h-4 ml-2" />
-                العودة للوحة التحكم
+                <span className="hidden sm:inline">العودة للوحة التحكم</span>
+                <span className="sm:hidden">العودة</span>
               </Button>
-              <Button onClick={() => setShowAddForm(true)}>
+              <Button onClick={() => setShowAddForm(true)} className="order-1 sm:order-2">
                 <Plus className="w-4 h-4 ml-2" />
-                إضافة عقار جديد
+                <span className="hidden sm:inline">إضافة عقار جديد</span>
+                <span className="sm:hidden">إضافة عقار</span>
               </Button>
             </div>
           </div>
@@ -234,7 +236,7 @@ const AdminProperties = () => {
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Basic Info */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="title">عنوان العقار</Label>
                     <Input
@@ -272,7 +274,7 @@ const AdminProperties = () => {
                 </div>
 
                 {/* Price and Type */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   <div>
                     <Label htmlFor="price">السعر</Label>
                     <Input
@@ -313,7 +315,7 @@ const AdminProperties = () => {
                 </div>
 
                 {/* Property Details */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                   <div>
                     <Label htmlFor="bedrooms">غرف النوم</Label>
                     <Input
@@ -355,7 +357,7 @@ const AdminProperties = () => {
                 {/* Images */}
                 <div>
                   <Label>صور العقار</Label>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
                     {formData.images.map((image, index) => (
                       <div key={index} className="space-y-2">
                         <Label className="text-sm">صورة {index + 1}</Label>
@@ -450,7 +452,7 @@ const AdminProperties = () => {
                 {/* Agent Information */}
                 <div className="border-t pt-6 mt-6">
                   <Label className="text-lg font-semibold mb-4 block">معلومات الوكيل</Label>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div>
                       <Label htmlFor="agent_name">اسم الوكيل</Label>
                       <Input
