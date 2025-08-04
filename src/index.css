@@ -17,26 +17,50 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Real Estate Brand Colors */
+    --primary: 240 100% 45%; /* Deep Royal Blue */
+    --primary-foreground: 0 0% 100%;
+    
+    --primary-light: 240 100% 65%; /* Lighter Blue */
+    --primary-glow: 240 100% 85%; /* Very Light Blue */
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 35 100% 50%; /* Warm Gold/Orange */
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 46%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 35 100% 50%; /* Warm accent */
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 240 6% 90%;
+    --input: 240 6% 90%;
+    --ring: 240 100% 45%;
 
-    --radius: 0.5rem;
+    /* Real Estate Specific Colors */
+    --success: 142 71% 45%; /* Green for success states */
+    --success-foreground: 0 0% 100%;
+    
+    --warning: 35 91% 55%; /* Orange for warnings */
+    --warning-foreground: 0 0% 100%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(240, 100%, 45%), hsl(240, 100%, 65%));
+    --gradient-secondary: linear-gradient(135deg, hsl(35, 100%, 50%), hsl(35, 100%, 65%));
+    --gradient-hero: linear-gradient(135deg, hsl(240, 100%, 45%) 0%, hsl(240, 100%, 65%) 50%, hsl(35, 100%, 50%) 100%);
+    
+    /* Shadows */
+    --shadow-elegant: 0 10px 30px -10px hsl(240 100% 45% / 0.3);
+    --shadow-glow: 0 0 40px hsl(240 100% 65% / 0.4);
+    --shadow-card: 0 4px 20px -4px hsl(240 100% 45% / 0.15);
+
+    /* Transitions */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
 
