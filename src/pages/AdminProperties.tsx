@@ -22,6 +22,7 @@ import {
   DollarSign
 } from 'lucide-react';
 import inspireLogo from '@/assets/inspire-logo.png';
+import { ImageUploader } from '@/components/ImageUploader';
 
 const AdminProperties = () => {
   const navigate = useNavigate();
@@ -354,18 +355,49 @@ const AdminProperties = () => {
                 {/* Images */}
                 <div>
                   <Label>صور العقار</Label>
-                  {formData.images.map((image, index) => (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+                    {formData.images.map((image, index) => (
+                      <div key={index} className="space-y-2">
+                        <Label className="text-sm">صورة {index + 1}</Label>
+                        <ImageUploader
+                          bucketName="property-images"
+                          folder="properties"
+                          currentImageUrl={image}
+                          onImageUploaded={(url) => handleArrayChange('images', index, url)}
+                          onImageRemoved={() => removeArrayItem('images', index)}
+                          buttonText="رفع صورة العقار"
+                        />
+                      </div>
+                    ))}
+                    <div className="flex items-end">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => addArrayItem('images')}
+                        className="w-full"
+                      >
+                        <Plus className="w-4 h-4 ml-2" />
+                        إضافة صورة جديدة
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Features */}
+                <div>
+                  <Label>المميزات</Label>
+                  {formData.features.map((feature, index) => (
                     <div key={index} className="flex gap-2 mt-2">
                       <Input
-                        value={image}
-                        onChange={(e) => handleArrayChange('images', index, e.target.value)}
-                        placeholder="رابط الصورة"
+                        value={feature}
+                        onChange={(e) => handleArrayChange('features', index, e.target.value)}
+                        placeholder="مثال: مصعد، أمن، حديقة"
                       />
                       <Button
                         type="button"
                         variant="outline"
                         size="sm"
-                        onClick={() => removeArrayItem('images', index)}
+                        onClick={() => removeArrayItem('features', index)}
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
@@ -375,12 +407,92 @@ const AdminProperties = () => {
                     type="button"
                     variant="outline"
                     size="sm"
-                    onClick={() => addArrayItem('images')}
+                    onClick={() => addArrayItem('features')}
                     className="mt-2"
                   >
                     <Plus className="w-4 h-4 ml-2" />
-                    إضافة صورة
+                    إضافة ميزة
                   </Button>
+                </div>
+
+                {/* Amenities */}
+                <div>
+                  <Label>المرافق</Label>
+                  {formData.amenities.map((amenity, index) => (
+                    <div key={index} className="flex gap-2 mt-2">
+                      <Input
+                        value={amenity}
+                        onChange={(e) => handleArrayChange('amenities', index, e.target.value)}
+                        placeholder="مثال: نادي صحي، مسبح، ملعب"
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => removeArrayItem('amenities', index)}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  ))}
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => addArrayItem('amenities')}
+                    className="mt-2"
+                  >
+                    <Plus className="w-4 h-4 ml-2" />
+                    إضافة مرفق
+                  </Button>
+                </div>
+
+                {/* Agent Information */}
+                <div className="border-t pt-6 mt-6">
+                  <Label className="text-lg font-semibold mb-4 block">معلومات الوكيل</Label>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <Label htmlFor="agent_name">اسم الوكيل</Label>
+                      <Input
+                        id="agent_name"
+                        value={formData.agent_name}
+                        onChange={(e) => handleInputChange('agent_name', e.target.value)}
+                        placeholder="اسم الوكيل"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="agent_phone">هاتف الوكيل</Label>
+                      <Input
+                        id="agent_phone"
+                        value={formData.agent_phone}
+                        onChange={(e) => handleInputChange('agent_phone', e.target.value)}
+                        placeholder="رقم الهاتف"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="agent_email">بريد الوكيل الإلكتروني</Label>
+                      <Input
+                        id="agent_email"
+                        type="email"
+                        value={formData.agent_email}
+                        onChange={(e) => handleInputChange('agent_email', e.target.value)}
+                        placeholder="البريد الإلكتروني"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="mt-4">
+                    <Label>صورة الوكيل</Label>
+                    <ImageUploader
+                      bucketName="property-images"
+                      folder="agents"
+                      currentImageUrl={formData.agent_image}
+                      onImageUploaded={(url) => handleInputChange('agent_image', url)}
+                      onImageRemoved={() => handleInputChange('agent_image', '')}
+                      buttonText="رفع صورة الوكيل"
+                      className="mt-2"
+                    />
+                  </div>
                 </div>
 
                 {/* Action Buttons */}

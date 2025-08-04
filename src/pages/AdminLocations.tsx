@@ -18,6 +18,7 @@ import {
   EyeOff
 } from 'lucide-react';
 import inspireLogo from '@/assets/inspire-logo.png';
+import { ImageUploader } from '@/components/ImageUploader';
 
 const AdminLocations = () => {
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ const AdminLocations = () => {
     name: '',
     city: '',
     governorate: '',
+    image_url: '',
     is_active: true
   });
 
@@ -54,6 +56,7 @@ const AdminLocations = () => {
       name: '',
       city: '',
       governorate: '',
+      image_url: '',
       is_active: true
     });
     setEditingLocation(null);
@@ -87,6 +90,7 @@ const AdminLocations = () => {
       name: location.name,
       city: location.city,
       governorate: location.governorate,
+      image_url: location.image_url || '',
       is_active: location.is_active
     });
     setEditingLocation(location);
@@ -264,6 +268,19 @@ const AdminLocations = () => {
                       required
                     />
                   </div>
+                </div>
+
+                <div>
+                  <Label>صورة الموقع</Label>
+                  <ImageUploader
+                    bucketName="location-images"
+                    folder="locations"
+                    currentImageUrl={formData.image_url}
+                    onImageUploaded={(url) => handleInputChange('image_url', url)}
+                    onImageRemoved={() => handleInputChange('image_url', '')}
+                    buttonText="رفع صورة الموقع"
+                    className="mt-2"
+                  />
                 </div>
 
                 <div className="flex items-center space-x-2">
