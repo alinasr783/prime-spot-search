@@ -1,10 +1,20 @@
+import { useNavigate } from "react-router-dom";
 import SearchForm, { SearchFilters } from "./SearchForm";
 import sereneHeroBackground from "@/assets/serene-hero-bg.jpg";
 
 const HeroSection = () => {
+  const navigate = useNavigate();
+
   const handleSearch = (filters: SearchFilters) => {
-    console.log("البحث عن:", filters);
-    // هنا يمكن إضافة منطق البحث أو التوجيه لصفحة النتائج
+    const searchParams = new URLSearchParams();
+    
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value && value !== "") {
+        searchParams.append(key, value);
+      }
+    });
+    
+    navigate(`/properties?${searchParams.toString()}`);
   };
 
   return (

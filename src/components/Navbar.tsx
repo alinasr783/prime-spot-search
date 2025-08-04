@@ -15,9 +15,9 @@ const Navbar = () => {
   };
 
   const menuItems = [
-    { label: "الرئيسية", icon: Home, href: "#" },
+    { label: "الرئيسية", icon: Home, href: "/" },
+    { label: "العقارات", icon: Building, href: "/properties" },
     { label: "البحث", icon: Search, href: "#search" },
-    { label: "العقارات", icon: Building, href: "#properties" },
     { label: "اتصل بنا", icon: Phone, href: "#contact" },
   ];
 
