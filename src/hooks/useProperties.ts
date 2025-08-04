@@ -42,7 +42,7 @@ export const useProperties = (filters?: SearchFilters) => {
       // Apply filters if provided
       if (filters) {
         if (filters.location && filters.location !== "" && filters.location !== "all") {
-          query = query.eq('location', filters.location);
+          query = query.ilike('location', `%${filters.location}%`);
         }
         
         if (filters.propertyType && filters.propertyType !== "" && filters.propertyType !== "all") {
