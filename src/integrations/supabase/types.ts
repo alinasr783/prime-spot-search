@@ -115,6 +115,36 @@ export type Database = {
           },
         ]
       }
+      locations: {
+        Row: {
+          city: string
+          created_at: string
+          governorate: string
+          id: string
+          is_active: boolean
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          city: string
+          created_at?: string
+          governorate: string
+          id?: string
+          is_active?: boolean
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          city?: string
+          created_at?: string
+          governorate?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       properties: {
         Row: {
           agent_email: string | null
@@ -139,6 +169,7 @@ export type Database = {
           price: number
           price_type: string | null
           property_type: string
+          special_type: string | null
           title: string
           updated_at: string | null
         }
@@ -165,6 +196,7 @@ export type Database = {
           price: number
           price_type?: string | null
           property_type: string
+          special_type?: string | null
           title: string
           updated_at?: string | null
         }
@@ -191,6 +223,7 @@ export type Database = {
           price?: number
           price_type?: string | null
           property_type?: string
+          special_type?: string | null
           title?: string
           updated_at?: string | null
         }
