@@ -27,11 +27,13 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <img 
-              src={inspireLogo} 
-              alt="Inspire Logo" 
-              className="w-10 h-10 object-contain"
-            />
+            <div className="w-10 h-10 bg-white rounded-full p-1.5 shadow-lg flex items-center justify-center">
+              <img 
+                src={inspireLogo} 
+                alt="Inspire Logo" 
+                className="w-full h-full object-contain"
+              />
+            </div>
             <div>
               <h1 className="text-xl font-bold text-foreground">inspire</h1>
               <p className="text-xs text-muted-foreground">التسويق العقاري</p>
@@ -81,11 +83,13 @@ const Navbar = () => {
                 <div className="flex flex-col gap-6 mt-8">
                   {/* Mobile Logo */}
                   <div className="flex items-center gap-3 pb-6 border-b">
-                    <img 
-                      src={inspireLogo} 
-                      alt="Inspire Logo" 
-                      className="w-12 h-12 object-contain"
-                    />
+                    <div className="w-12 h-12 bg-white rounded-full p-2 shadow-lg flex items-center justify-center">
+                      <img 
+                        src={inspireLogo} 
+                        alt="Inspire Logo" 
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
                     <div>
                       <h1 className="text-2xl font-bold text-foreground">inspire</h1>
                       <p className="text-sm text-muted-foreground">التسويق العقاري</p>
