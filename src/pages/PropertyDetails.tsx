@@ -363,10 +363,10 @@ const PropertyDetails = () => {
                     </div>
                   </div>
                   
-                  {/* Google Maps Dynamic Location */}
+                  {/* Google Maps Simple Embed */}
                   <div className="rounded-xl overflow-hidden border border-border/20 shadow-sm">
                     <iframe
-                      src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dOWTgHz1n_GQjs&q=${encodeURIComponent(property.location + ', مصر')}&zoom=15&maptype=roadmap&language=ar&region=EG`}
+                      src={`https://maps.google.com/maps?q=${encodeURIComponent(property.location + ', مصر')}&output=embed&hl=ar`}
                       width="100%"
                       height="300"
                       style={{ border: 0 }}
