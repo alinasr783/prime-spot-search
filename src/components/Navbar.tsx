@@ -4,10 +4,13 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
 import { Menu, Home, Search, Building, Phone, Mail, Sun, Moon } from "lucide-react";
 import inspireLogo from "@/assets/inspire-logo.png";
+import { useContactSettings } from "@/hooks/useContactSettings";
+import ContactButtons from "@/components/ContactButtons";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const { settings } = useContactSettings();
 
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
@@ -67,10 +70,19 @@ const Navbar = () => {
             </Button>
 
             {/* Contact Button */}
-            <Button variant="default" size="sm" className="hidden md:flex">
-              <Phone className="w-4 h-4 ml-2" />
-              اتصل بنا
-            </Button>
+            {settings?.phone && (
+              <Button 
+                variant="default" 
+                size="sm" 
+                className="hidden md:flex"
+                asChild
+              >
+                <a href={`tel:${settings.phone}`}>
+                  <Phone className="w-4 h-4 ml-2" />
+                  اتصل بنا
+                </a>
+              </Button>
+            )}
 
             {/* Mobile Menu */}
             <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
@@ -122,23 +134,31 @@ const Navbar = () => {
                       {isDarkMode ? 'الوضع الفاتح' : 'الوضع الداكن'}
                     </Button>
 
-                    <Button variant="default" className="w-full">
-                      <Phone className="w-5 h-5 ml-2" />
-                      اتصل بنا الآن
-                    </Button>
+                    <ContactButtons 
+                      direction="vertical" 
+                      size="sm" 
+                      variant="default"
+                      className="w-full"
+                    />
                   </div>
 
                   {/* Contact Info */}
-                  <div className="bg-muted/50 rounded-lg p-4 space-y-2">
-                    <div className="flex items-center gap-2 text-sm">
-                      <Phone className="w-4 h-4 text-primary" />
-                      <span>+20 100 123 4567</span>
+                  {(settings?.phone || settings?.email) && (
+                    <div className="bg-muted/50 rounded-lg p-4 space-y-2">
+                      {settings.phone && (
+                        <div className="flex items-center gap-2 text-sm">
+                          <Phone className="w-4 h-4 text-primary" />
+                          <span>{settings.phone}</span>
+                        </div>
+                      )}
+                      {settings.email && (
+                        <div className="flex items-center gap-2 text-sm">
+                          <Mail className="w-4 h-4 text-primary" />
+                          <span>{settings.email}</span>
+                        </div>
+                      )}
                     </div>
-                    <div className="flex items-center gap-2 text-sm">
-                      <Mail className="w-4 h-4 text-primary" />
-                      <span>info@inspire.com</span>
-                    </div>
-                  </div>
+                  )}
                 </div>
               </SheetContent>
             </Sheet>

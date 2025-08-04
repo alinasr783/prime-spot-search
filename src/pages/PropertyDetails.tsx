@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ContactRequestForm } from "@/components/ContactRequestForm";
+import ContactButtons from "@/components/ContactButtons";
 import inspireLogo from "@/assets/inspire-logo.png";
 import { 
   MapPin, 
@@ -417,11 +418,20 @@ const PropertyDetails = () => {
                       }
                     />
                     
+                    <ContactButtons 
+                      direction="vertical" 
+                      size="lg" 
+                      variant="outline"
+                      propertyTitle={property.title}
+                      propertyId={property.id}
+                      className="space-y-4"
+                    />
+                    
                     {property.agent_phone && (
                       <Button variant="outline" className="w-full h-12 text-lg rounded-xl border-2 hover:bg-primary/5" asChild>
                         <a href={`tel:${property.agent_phone}`}>
                           <Phone className="w-5 h-5 ml-2" />
-                          {property.agent_phone}
+                          المستشار: {property.agent_phone}
                         </a>
                       </Button>
                     )}
@@ -430,7 +440,7 @@ const PropertyDetails = () => {
                       <Button variant="outline" className="w-full h-12 text-lg rounded-xl border-2 hover:bg-secondary/5" asChild>
                         <a href={`mailto:${property.agent_email}?subject=استفسار عن ${property.title}`}>
                           <Mail className="w-5 h-5 ml-2" />
-                          إرسال إيميل
+                          إرسال إيميل للمستشار
                         </a>
                       </Button>
                     )}
