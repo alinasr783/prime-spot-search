@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { useDashboardStats } from '@/hooks/useDashboardStats';
 import { 
   Building, 
   MapPin, 
@@ -11,13 +13,18 @@ import {
   Users,
   BarChart3,
   Plus,
-  LogOut
+  LogOut,
+  Eye,
+  Edit,
+  TrendingUp,
+  Activity
 } from 'lucide-react';
 import inspireLogo from '@/assets/inspire-logo.png';
 
 const AdminDashboard = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
+  const { totalProperties, newInquiries, featuredProperties, totalLocations, loading, error } = useDashboardStats();
 
   useEffect(() => {
     // Simple check - if no admin data in localStorage, redirect
@@ -136,9 +143,79 @@ const AdminDashboard = () => {
           ))}
         </div>
 
-        {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card>
+        {/* Statistics Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <Card className="border-border/50">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">إجمالي العقارات</p>
+                  <p className="text-2xl font-bold text-foreground">
+                    {loading ? '...' : totalProperties}
+                  </p>
+                </div>
+                <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
+                  <Building className="w-6 h-6 text-white" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-border/50">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">الرسائل الجديدة</p>
+                  <p className="text-2xl font-bold text-foreground">
+                    {loading ? '...' : newInquiries}
+                  </p>
+                  {newInquiries > 0 && (
+                    <Badge variant="destructive" className="text-xs">جديد</Badge>
+                  )}
+                </div>
+                <div className="w-12 h-12 bg-red-500 rounded-lg flex items-center justify-center">
+                  <MessageSquare className="w-6 h-6 text-white" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-border/50">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">العقارات المميزة</p>
+                  <p className="text-2xl font-bold text-foreground">
+                    {loading ? '...' : featuredProperties}
+                  </p>
+                </div>
+                <div className="w-12 h-12 bg-yellow-500 rounded-lg flex items-center justify-center">
+                  <TrendingUp className="w-6 h-6 text-white" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-border/50">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">إجمالي المواقع</p>
+                  <p className="text-2xl font-bold text-foreground">
+                    {loading ? '...' : totalLocations}
+                  </p>
+                </div>
+                <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
+                  <MapPin className="w-6 h-6 text-white" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Quick Actions and Recent Activity */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <Card className="lg:col-span-1">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Plus className="w-5 h-5" />
@@ -149,7 +226,7 @@ const AdminDashboard = () => {
               <Button 
                 className="w-full justify-start"
                 variant="outline"
-                onClick={() => navigate('/admin/properties/new')}
+                onClick={() => navigate('/admin/properties')}
               >
                 <Building className="w-4 h-4 ml-2" />
                 إضافة عقار جديد
@@ -157,34 +234,85 @@ const AdminDashboard = () => {
               <Button 
                 className="w-full justify-start"
                 variant="outline"
-                onClick={() => navigate('/admin/locations/new')}
+                onClick={() => navigate('/admin/locations')}
               >
                 <MapPin className="w-4 h-4 ml-2" />
                 إضافة موقع جديد
               </Button>
+              <Button 
+                className="w-full justify-start"
+                variant="outline"
+                onClick={() => navigate('/admin/inquiries')}
+              >
+                <MessageSquare className="w-4 h-4 ml-2" />
+                عرض الرسائل
+              </Button>
+              <Button 
+                className="w-full justify-start"
+                variant="outline"
+                onClick={() => navigate('/admin/contact-settings')}
+              >
+                <Settings className="w-4 h-4 ml-2" />
+                إعدادات التواصل
+              </Button>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="lg:col-span-2">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <BarChart3 className="w-5 h-5" />
-                إحصائيات سريعة
+                <Activity className="w-5 h-5" />
+                إحصائيات النشاط
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">إجمالي العقارات</span>
-                  <span className="font-semibold">--</span>
+                <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+                      <Building className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <p className="font-medium">إجمالي العقارات النشطة</p>
+                      <p className="text-sm text-muted-foreground">العقارات المتاحة للعرض</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-2xl font-bold text-foreground">{loading ? '...' : totalProperties}</p>
+                    <p className="text-sm text-muted-foreground">عقار</p>
+                  </div>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">الرسائل الجديدة</span>
-                  <span className="font-semibold">--</span>
+
+                <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-red-500 rounded-lg flex items-center justify-center">
+                      <MessageSquare className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <p className="font-medium">الاستفسارات الجديدة</p>
+                      <p className="text-sm text-muted-foreground">تحتاج إلى مراجعة</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-2xl font-bold text-foreground">{loading ? '...' : newInquiries}</p>
+                    <p className="text-sm text-muted-foreground">رسالة</p>
+                  </div>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">العقارات المميزة</span>
-                  <span className="font-semibold">--</span>
+
+                <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-yellow-500 rounded-lg flex items-center justify-center">
+                      <TrendingUp className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <p className="font-medium">العقارات المميزة</p>
+                      <p className="text-sm text-muted-foreground">معروضة في الصفحة الرئيسية</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-2xl font-bold text-foreground">{loading ? '...' : featuredProperties}</p>
+                    <p className="text-sm text-muted-foreground">عقار</p>
+                  </div>
                 </div>
               </div>
             </CardContent>
