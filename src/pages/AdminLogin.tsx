@@ -34,8 +34,10 @@ const AdminLogin = () => {
           title: "تم تسجيل الدخول بنجاح",
           description: "مرحباً بك في لوحة التحكم",
         });
-        // Navigate immediately since login already updates localStorage
-        navigate('/admin/dashboard', { replace: true });
+        // Small delay to ensure state updates before navigation
+        setTimeout(() => {
+          navigate('/admin/dashboard', { replace: true });
+        }, 200);
       } else {
         setError(result.error || 'حدث خطأ أثناء تسجيل الدخول');
       }
