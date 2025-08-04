@@ -26,19 +26,26 @@ const AdminLogin = () => {
     setError('');
     setIsLoading(true);
 
-    const result = await login(email, password);
-    
-    if (result.success) {
-      toast({
-        title: "تم تسجيل الدخول بنجاح",
-        description: "مرحباً بك في لوحة التحكم",
-      });
-      navigate('/admin/dashboard');
-    } else {
-      setError(result.error || 'حدث خطأ أثناء تسجيل الدخول');
+    try {
+      const result = await login(email, password);
+      
+      if (result.success) {
+        toast({
+          title: "تم تسجيل الدخول بنجاح",
+          description: "مرحباً بك في لوحة التحكم",
+        });
+        // Use setTimeout to ensure state updates complete before navigation
+        setTimeout(() => {
+          navigate('/admin/dashboard', { replace: true });
+        }, 100);
+      } else {
+        setError(result.error || 'حدث خطأ أثناء تسجيل الدخول');
+      }
+    } catch (error) {
+      setError('حدث خطأ أثناء تسجيل الدخول');
+    } finally {
+      setIsLoading(false);
     }
-    
-    setIsLoading(false);
   };
 
   return (
