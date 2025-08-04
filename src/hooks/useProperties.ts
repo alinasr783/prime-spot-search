@@ -93,7 +93,7 @@ export const useProperties = (filters?: SearchFilters) => {
 
   useEffect(() => {
     fetchProperties();
-  }, []);
+  }, [filters]);
 
   return { properties, loading, error, refetch: fetchProperties };
 };

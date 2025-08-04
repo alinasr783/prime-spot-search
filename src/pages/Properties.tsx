@@ -42,10 +42,8 @@ const Properties = () => {
     setAppliedFilters(initialFilters);
   }, [searchParams]);
 
-  useEffect(() => {
-    // Refetch when applied filters change
-    refetch();
-  }, [appliedFilters, refetch]);
+  // Remove the useEffect that was causing infinite re-renders
+  // The useProperties hook will automatically refetch when appliedFilters change
 
   const handleFiltersChange = (newFilters: SearchFiltersType) => {
     setFilters(newFilters);
@@ -53,7 +51,6 @@ const Properties = () => {
 
   const handleApplyFilters = () => {
     setAppliedFilters(filters);
-    refetch();
     setShowFilters(false);
   };
 
