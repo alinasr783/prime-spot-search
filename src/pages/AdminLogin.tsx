@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -17,9 +17,17 @@ const AdminLogin = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   
-  const { login } = useAuth();
+  const { login, admin } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  // Auto-redirect if already logged in
+  useEffect(() => {
+    if (admin) {
+      console.log('🔄 Already logged in, redirecting to dashboard...');
+      navigate('/admin/dashboard', { replace: true });
+    }
+  }, [admin, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,10 +42,8 @@ const AdminLogin = () => {
           title: "تم تسجيل الدخول بنجاح",
           description: "مرحباً بك في لوحة التحكم",
         });
-        // Small delay to ensure state updates before navigation
-        setTimeout(() => {
-          navigate('/admin/dashboard', { replace: true });
-        }, 200);
+        console.log('🎉 Login successful, useEffect will handle navigation');
+        // Don't navigate here - let useEffect handle it when admin state updates
       } else {
         setError(result.error || 'حدث خطأ أثناء تسجيل الدخول');
       }
