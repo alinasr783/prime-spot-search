@@ -7,7 +7,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* شعار الشركة */}
           <div className="space-y-4">
-            <h3 className="text-xl font-bold text-foreground">عقارات مصر</h3>
+            <h3 className="text-xl font-bold text-foreground">شركة إنسباير العقارية</h3>
             <p className="text-muted-foreground">
               منصة العقارات الرائدة في مصر لأفضل العقارات والخدمات العقارية
             </p>
@@ -44,7 +44,7 @@ const Footer = () => {
                   to="/admin/login" 
                   className="hover:text-primary transition-colors"
                 >
-                  Are you the admin?
+                  لوحة التحكم
                 </Link>
               </li>
             </ul>
@@ -52,7 +52,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t mt-8 pt-8 text-center text-muted-foreground">
-          <p>&copy; 2024 عقارات مصر. جميع الحقوق محفوظة.</p>
+          <p>&copy; 2024 شركة إنسباير العقارية. جميع الحقوق محفوظة.</p>
         </div>
       </div>
     </footer>

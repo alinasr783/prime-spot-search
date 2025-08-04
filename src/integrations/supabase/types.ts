@@ -71,6 +71,54 @@ export type Database = {
         }
         Relationships: []
       }
+      contact_settings: {
+        Row: {
+          address: string | null
+          company_name: string
+          created_at: string
+          email: string | null
+          facebook_url: string | null
+          id: string
+          instagram_url: string | null
+          linkedin_url: string | null
+          phone: string | null
+          twitter_url: string | null
+          updated_at: string
+          whatsapp_number: string | null
+          youtube_url: string | null
+        }
+        Insert: {
+          address?: string | null
+          company_name?: string
+          created_at?: string
+          email?: string | null
+          facebook_url?: string | null
+          id?: string
+          instagram_url?: string | null
+          linkedin_url?: string | null
+          phone?: string | null
+          twitter_url?: string | null
+          updated_at?: string
+          whatsapp_number?: string | null
+          youtube_url?: string | null
+        }
+        Update: {
+          address?: string | null
+          company_name?: string
+          created_at?: string
+          email?: string | null
+          facebook_url?: string | null
+          id?: string
+          instagram_url?: string | null
+          linkedin_url?: string | null
+          phone?: string | null
+          twitter_url?: string | null
+          updated_at?: string
+          whatsapp_number?: string | null
+          youtube_url?: string | null
+        }
+        Relationships: []
+      }
       inquiries: {
         Row: {
           created_at: string | null
