@@ -363,10 +363,10 @@ const PropertyDetails = () => {
                     </div>
                   </div>
                   
-                  {/* Google Earth Direct Link */}
+                  {/* Google Maps Dynamic Location */}
                   <div className="rounded-xl overflow-hidden border border-border/20 shadow-sm">
                     <iframe
-                      src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3454!2d31.235!3d30.044!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2z${encodeURIComponent(property.location)}!5e1!3m2!1sar!2seg!4v1640123456789!5m2!1sar!2seg`}
+                      src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dOWTgHz1n_GQjs&q=${encodeURIComponent(property.location + ', مصر')}&zoom=15&maptype=roadmap&language=ar&region=EG`}
                       width="100%"
                       height="300"
                       style={{ border: 0 }}
