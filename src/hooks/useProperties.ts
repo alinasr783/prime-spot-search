@@ -41,19 +41,19 @@ export const useProperties = (filters?: SearchFilters) => {
 
       // Apply filters if provided
       if (filters) {
-        if (filters.location && filters.location !== "") {
+        if (filters.location && filters.location !== "" && filters.location !== "all") {
           query = query.eq('location', filters.location);
         }
         
-        if (filters.propertyType && filters.propertyType !== "") {
+        if (filters.propertyType && filters.propertyType !== "" && filters.propertyType !== "all") {
           query = query.eq('property_type', filters.propertyType);
         }
         
-        if (filters.priceType && filters.priceType !== "") {
+        if (filters.priceType && filters.priceType !== "" && filters.priceType !== "all") {
           query = query.eq('price_type', filters.priceType);
         }
         
-        if (filters.bedrooms && filters.bedrooms !== "") {
+        if (filters.bedrooms && filters.bedrooms !== "" && filters.bedrooms !== "all") {
           if (filters.bedrooms === "5+") {
             query = query.gte('bedrooms', 5);
           } else {
@@ -61,7 +61,7 @@ export const useProperties = (filters?: SearchFilters) => {
           }
         }
         
-        if (filters.bathrooms && filters.bathrooms !== "") {
+        if (filters.bathrooms && filters.bathrooms !== "" && filters.bathrooms !== "all") {
           if (filters.bathrooms === "4+") {
             query = query.gte('bathrooms', 4);
           } else {

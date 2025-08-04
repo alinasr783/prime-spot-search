@@ -95,12 +95,12 @@ const SearchFilters = ({ filters, onFiltersChange, onApplyFilters }: SearchFilte
             <MapPin className="w-4 h-4 text-primary" />
             المنطقة
           </label>
-          <Select value={filters.location} onValueChange={(value) => handleInputChange("location", value)}>
+          <Select value={filters.location || "all"} onValueChange={(value) => handleInputChange("location", value === "all" ? "" : value)}>
             <SelectTrigger className="text-right">
               <SelectValue placeholder="اختر المنطقة" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="" className="text-right">جميع المناطق</SelectItem>
+              <SelectItem value="all" className="text-right">جميع المناطق</SelectItem>
               {locations.map((location) => (
                 <SelectItem key={location.id} value={location.name} className="text-right">
                   {location.name} - {location.city}
@@ -116,12 +116,12 @@ const SearchFilters = ({ filters, onFiltersChange, onApplyFilters }: SearchFilte
             <Home className="w-4 h-4 text-primary" />
             نوع العقار
           </label>
-          <Select value={filters.propertyType} onValueChange={(value) => handleInputChange("propertyType", value)}>
+          <Select value={filters.propertyType || "all"} onValueChange={(value) => handleInputChange("propertyType", value === "all" ? "" : value)}>
             <SelectTrigger className="text-right">
               <SelectValue placeholder="نوع الوحدة" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="" className="text-right">جميع الأنواع</SelectItem>
+              <SelectItem value="all" className="text-right">جميع الأنواع</SelectItem>
               {propertyTypes.map((type) => (
                 <SelectItem key={type} value={type} className="text-right">
                   {type}
@@ -137,12 +137,12 @@ const SearchFilters = ({ filters, onFiltersChange, onApplyFilters }: SearchFilte
             <DollarSign className="w-4 h-4 text-primary" />
             نوع العرض
           </label>
-          <Select value={filters.priceType} onValueChange={(value) => handleInputChange("priceType", value)}>
+          <Select value={filters.priceType || "all"} onValueChange={(value) => handleInputChange("priceType", value === "all" ? "" : value)}>
             <SelectTrigger className="text-right">
               <SelectValue placeholder="إيجار أو بيع" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="" className="text-right">جميع الأنواع</SelectItem>
+              <SelectItem value="all" className="text-right">جميع الأنواع</SelectItem>
               <SelectItem value="للبيع" className="text-right">للبيع</SelectItem>
               <SelectItem value="للإيجار" className="text-right">للإيجار</SelectItem>
             </SelectContent>
@@ -155,12 +155,12 @@ const SearchFilters = ({ filters, onFiltersChange, onApplyFilters }: SearchFilte
             <Bed className="w-4 h-4 text-primary" />
             غرف النوم
           </label>
-          <Select value={filters.bedrooms} onValueChange={(value) => handleInputChange("bedrooms", value)}>
+          <Select value={filters.bedrooms || "all"} onValueChange={(value) => handleInputChange("bedrooms", value === "all" ? "" : value)}>
             <SelectTrigger className="text-right">
               <SelectValue placeholder="عدد الغرف" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="" className="text-right">أي عدد</SelectItem>
+              <SelectItem value="all" className="text-right">أي عدد</SelectItem>
               <SelectItem value="1" className="text-right">1 غرفة</SelectItem>
               <SelectItem value="2" className="text-right">2 غرفة</SelectItem>
               <SelectItem value="3" className="text-right">3 غرف</SelectItem>
@@ -176,12 +176,12 @@ const SearchFilters = ({ filters, onFiltersChange, onApplyFilters }: SearchFilte
             <Bath className="w-4 h-4 text-primary" />
             غرف الحمام
           </label>
-          <Select value={filters.bathrooms} onValueChange={(value) => handleInputChange("bathrooms", value)}>
+          <Select value={filters.bathrooms || "all"} onValueChange={(value) => handleInputChange("bathrooms", value === "all" ? "" : value)}>
             <SelectTrigger className="text-right">
               <SelectValue placeholder="عدد الحمامات" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="" className="text-right">أي عدد</SelectItem>
+              <SelectItem value="all" className="text-right">أي عدد</SelectItem>
               <SelectItem value="1" className="text-right">1 حمام</SelectItem>
               <SelectItem value="2" className="text-right">2 حمام</SelectItem>
               <SelectItem value="3" className="text-right">3 حمامات</SelectItem>

@@ -28,9 +28,24 @@ const Properties = () => {
   const { properties, loading, error, refetch } = useProperties(appliedFilters);
 
   useEffect(() => {
-    // Update applied filters when URL params change
-    setAppliedFilters(filters);
-  }, []);
+    // Initialize filters from URL params and apply them immediately
+    const initialFilters = {
+      location: searchParams.get("location") || "",
+      propertyType: searchParams.get("propertyType") || "",
+      priceType: searchParams.get("priceType") || "",
+      bedrooms: searchParams.get("bedrooms") || "",
+      bathrooms: searchParams.get("bathrooms") || "",
+      priceMin: searchParams.get("priceMin") || "",
+      priceMax: searchParams.get("priceMax") || "",
+    };
+    setFilters(initialFilters);
+    setAppliedFilters(initialFilters);
+  }, [searchParams]);
+
+  useEffect(() => {
+    // Refetch when applied filters change
+    refetch();
+  }, [appliedFilters, refetch]);
 
   const handleFiltersChange = (newFilters: SearchFiltersType) => {
     setFilters(newFilters);
