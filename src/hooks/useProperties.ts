@@ -21,6 +21,10 @@ interface Property {
   agent_phone: string;
   agent_email: string;
   created_at: string;
+  parking?: number;
+  floor_number?: string;
+  build_year?: number;
+  special_type?: string;
 }
 
 export const useProperties = (filters?: SearchFilters) => {

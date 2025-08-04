@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ContactRequestForm } from "@/components/ContactRequestForm";
 import { 
   MapPin, 
   Bath, 
@@ -18,7 +19,14 @@ import {
   Heart,
   ArrowLeft,
   Star,
-  CheckCircle
+  CheckCircle,
+  Building,
+  Ruler,
+  Car,
+  Home,
+  MessageSquare,
+  Eye,
+  Clock
 } from "lucide-react";
 import { useState } from "react";
 
@@ -135,26 +143,42 @@ const PropertyDetails = () => {
             </div>
 
             {/* Property Stats */}
-            <div className="flex items-center gap-6 text-muted-foreground">
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 p-6 bg-muted/30 rounded-lg">
               {property.bedrooms > 0 && (
-                <div className="flex items-center gap-2">
-                  <Bed className="w-5 h-5" />
-                  <span className="font-medium">{property.bedrooms} غرف نوم</span>
+                <div className="flex flex-col items-center text-center">
+                  <Bed className="w-6 h-6 text-primary mb-2" />
+                  <span className="font-bold text-lg text-foreground">{property.bedrooms}</span>
+                  <span className="text-sm text-muted-foreground">غرف نوم</span>
                 </div>
               )}
-              <div className="flex items-center gap-2">
-                <Bath className="w-5 h-5" />
-                <span className="font-medium">{property.bathrooms} حمام</span>
+              <div className="flex flex-col items-center text-center">
+                <Bath className="w-6 h-6 text-primary mb-2" />
+                <span className="font-bold text-lg text-foreground">{property.bathrooms}</span>
+                <span className="text-sm text-muted-foreground">حمام</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Square className="w-5 h-5" />
-                <span className="font-medium">{property.area} م²</span>
+              <div className="flex flex-col items-center text-center">
+                <Square className="w-6 h-6 text-primary mb-2" />
+                <span className="font-bold text-lg text-foreground">{property.area}</span>
+                <span className="text-sm text-muted-foreground">م²</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Calendar className="w-5 h-5" />
-                <span className="font-medium">
-                  {new Date(property.created_at).toLocaleDateString('ar-EG')}
+              <div className="flex flex-col items-center text-center">
+                <Building className="w-6 h-6 text-primary mb-2" />
+                <span className="font-bold text-lg text-foreground">{property.property_type}</span>
+                <span className="text-sm text-muted-foreground">نوع العقار</span>
+              </div>
+              {property.parking && property.parking > 0 && (
+                <div className="flex flex-col items-center text-center">
+                  <Car className="w-6 h-6 text-primary mb-2" />
+                  <span className="font-bold text-lg text-foreground">{property.parking}</span>
+                  <span className="text-sm text-muted-foreground">موقف سيارة</span>
+                </div>
+              )}
+              <div className="flex flex-col items-center text-center">
+                <Calendar className="w-6 h-6 text-primary mb-2" />
+                <span className="font-bold text-lg text-foreground">
+                  {new Date(property.created_at).toLocaleDateString('ar-EG', { month: 'short', year: 'numeric' })}
                 </span>
+                <span className="text-sm text-muted-foreground">تاريخ الإعلان</span>
               </div>
             </div>
           </div>
@@ -234,49 +258,171 @@ const PropertyDetails = () => {
                   </CardContent>
                 </Card>
               )}
+
+              {/* Additional Details */}
+              <Card>
+                <CardContent className="p-6">
+                  <h2 className="text-2xl font-bold text-foreground mb-6">تفاصيل إضافية</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center py-2 border-b border-muted">
+                        <span className="text-muted-foreground">نوع العقار:</span>
+                        <span className="font-medium text-foreground">{property.property_type}</span>
+                      </div>
+                      <div className="flex justify-between items-center py-2 border-b border-muted">
+                        <span className="text-muted-foreground">المساحة:</span>
+                        <span className="font-medium text-foreground">{property.area} متر مربع</span>
+                      </div>
+                      <div className="flex justify-between items-center py-2 border-b border-muted">
+                        <span className="text-muted-foreground">عدد غرف النوم:</span>
+                        <span className="font-medium text-foreground">{property.bedrooms || 'غير محدد'}</span>
+                      </div>
+                      <div className="flex justify-between items-center py-2 border-b border-muted">
+                        <span className="text-muted-foreground">عدد الحمامات:</span>
+                        <span className="font-medium text-foreground">{property.bathrooms}</span>
+                      </div>
+                    </div>
+                    <div className="space-y-4">
+                      {property.floor_number && (
+                        <div className="flex justify-between items-center py-2 border-b border-muted">
+                          <span className="text-muted-foreground">رقم الطابق:</span>
+                          <span className="font-medium text-foreground">{property.floor_number}</span>
+                        </div>
+                      )}
+                      {property.build_year && (
+                        <div className="flex justify-between items-center py-2 border-b border-muted">
+                          <span className="text-muted-foreground">سنة البناء:</span>
+                          <span className="font-medium text-foreground">{property.build_year}</span>
+                        </div>
+                      )}
+                      {property.parking && property.parking > 0 && (
+                        <div className="flex justify-between items-center py-2 border-b border-muted">
+                          <span className="text-muted-foreground">مواقف السيارات:</span>
+                          <span className="font-medium text-foreground">{property.parking}</span>
+                        </div>
+                      )}
+                      <div className="flex justify-between items-center py-2 border-b border-muted">
+                        <span className="text-muted-foreground">حالة العقار:</span>
+                        <span className="font-medium text-foreground">{property.special_type || 'عادي'}</span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Location Details */}
+              <Card>
+                <CardContent className="p-6">
+                  <h2 className="text-2xl font-bold text-foreground mb-4">الموقع</h2>
+                  <div className="flex items-start gap-3">
+                    <MapPin className="w-6 h-6 text-primary mt-1" />
+                    <div>
+                      <p className="text-lg font-medium text-foreground">{property.location}</p>
+                      <p className="text-muted-foreground mt-1">
+                        يقع هذا العقار في موقع متميز يوفر سهولة الوصول لجميع الخدمات والمرافق الأساسية.
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
 
             {/* Contact Card */}
             <div className="lg:col-span-1">
-              <Card className="sticky top-4">
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-bold text-foreground mb-6">تواصل مع المسوق</h3>
-                  
-                  {property.agent_name && (
-                    <div className="mb-6 p-4 bg-muted/50 rounded-lg">
-                      <h4 className="font-semibold text-foreground mb-2">{property.agent_name}</h4>
-                      <p className="text-sm text-muted-foreground">مسوق عقاري</p>
-                    </div>
-                  )}
-
-                  <div className="space-y-4">
-                    {property.agent_phone && (
-                      <Button className="w-full" size="lg">
-                        <Phone className="w-5 h-5 ml-2" />
-                        اتصل الآن
-                      </Button>
-                    )}
+              <div className="space-y-6">
+                {/* Company Contact Card */}
+                <Card className="sticky top-4">
+                  <CardContent className="p-6">
+                    <h3 className="text-xl font-bold text-foreground mb-6">تواصل مع الشركة</h3>
                     
-                    {property.agent_email && (
-                      <Button variant="outline" className="w-full" size="lg">
-                        <Mail className="w-5 h-5 ml-2" />
-                        أرسل رسالة
-                      </Button>
-                    )}
+                    <div className="mb-6 p-4 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg border border-primary/20">
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+                          <Building className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-foreground">شركة إنسباير العقارية</h4>
+                          <p className="text-sm text-muted-foreground">خبرة تمتد لأكثر من 10 سنوات</p>
+                        </div>
+                      </div>
+                      
+                      {property.agent_name && (
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <Eye className="w-4 h-4" />
+                          <span>المستشار المختص: {property.agent_name}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="space-y-4 mb-6">
+                      <ContactRequestForm 
+                        propertyId={property.id} 
+                        propertyTitle={property.title}
+                      />
+                      
+                      {property.agent_phone && (
+                        <Button variant="outline" className="w-full" size="lg" asChild>
+                          <a href={`tel:${property.agent_phone}`}>
+                            <Phone className="w-5 h-5 ml-2" />
+                            {property.agent_phone}
+                          </a>
+                        </Button>
+                      )}
+                      
+                      {property.agent_email && (
+                        <Button variant="outline" className="w-full" size="lg" asChild>
+                          <a href={`mailto:${property.agent_email}?subject=استفسار عن ${property.title}`}>
+                            <Mail className="w-5 h-5 ml-2" />
+                            إرسال إيميل
+                          </a>
+                        </Button>
+                      )}
+                    </div>
 
                     <div className="flex gap-2 pt-4 border-t">
                       <Button variant="outline" size="sm" className="flex-1">
                         <Heart className="w-4 h-4 ml-2" />
                         حفظ
                       </Button>
-                      <Button variant="outline" size="sm" className="flex-1">
+                      <Button variant="outline" size="sm" className="flex-1" onClick={() => {
+                        if (navigator.share) {
+                          navigator.share({
+                            title: property.title,
+                            text: `شاهد هذا العقار الرائع: ${property.title}`,
+                            url: window.location.href,
+                          });
+                        } else {
+                          navigator.clipboard.writeText(window.location.href);
+                        }
+                      }}>
                         <Share2 className="w-4 h-4 ml-2" />
                         مشاركة
                       </Button>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+
+                {/* Quick Info Card */}
+                <Card>
+                  <CardContent className="p-6">
+                    <h3 className="text-lg font-bold text-foreground mb-4">معلومات سريعة</h3>
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2 text-sm">
+                        <Clock className="w-4 h-4 text-muted-foreground" />
+                        <span className="text-muted-foreground">متاح للمعاينة يومياً</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <Phone className="w-4 h-4 text-muted-foreground" />
+                        <span className="text-muted-foreground">رد فوري على الاستفسارات</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <MessageSquare className="w-4 h-4 text-muted-foreground" />
+                        <span className="text-muted-foreground">استشارة مجانية</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
           </div>
         </div>
