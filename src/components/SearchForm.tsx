@@ -90,8 +90,8 @@ const SearchForm = ({ className, onSearch }: SearchFormProps) => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        {/* الموقع - الأهم */}
+      {/* الموقع - سطر كامل */}
+      <div className="mb-8">
         <div className="space-y-3">
           <label className="text-base font-bold text-foreground flex items-center gap-2">
             <MapPin className="w-5 h-5 text-primary" />
@@ -110,7 +110,10 @@ const SearchForm = ({ className, onSearch }: SearchFormProps) => {
             </SelectContent>
           </Select>
         </div>
+      </div>
 
+      {/* نوع العقار ونوع العرض - سطر واحد */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         {/* نوع العقار */}
         <div className="space-y-3">
           <label className="text-base font-bold text-foreground flex items-center gap-2">
@@ -222,7 +225,7 @@ const SearchForm = ({ className, onSearch }: SearchFormProps) => {
         <Button 
           variant="search"
           onClick={handleSearch}
-          className="w-full md:w-auto min-w-[200px] h-14 text-lg font-bold"
+          className="w-full h-14 text-lg font-bold"
         >
           <Search className="w-5 h-5 ml-2" />
           ابحث الآن

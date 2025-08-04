@@ -2,21 +2,16 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
-import { Menu, Home, Search, Building, Phone, Mail, Globe, Sun, Moon } from "lucide-react";
+import { Menu, Home, Search, Building, Phone, Mail, Sun, Moon } from "lucide-react";
+import inspireLogo from "@/assets/inspire-logo.png";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [currentLang, setCurrentLang] = useState<'ar' | 'en'>('ar');
 
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
     document.documentElement.classList.toggle('dark');
-  };
-
-  const toggleLanguage = () => {
-    setCurrentLang(currentLang === 'ar' ? 'en' : 'ar');
-    // هنا يمكن إضافة منطق تغيير اللغة
   };
 
   const menuItems = [
@@ -32,12 +27,14 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
-              <Building className="w-6 h-6 text-white" />
-            </div>
+            <img 
+              src={inspireLogo} 
+              alt="Inspire Logo" 
+              className="w-10 h-10 object-contain"
+            />
             <div>
-              <h1 className="text-xl font-bold text-foreground">عقاري</h1>
-              <p className="text-xs text-muted-foreground">العقارات المثالية</p>
+              <h1 className="text-xl font-bold text-foreground">inspire</h1>
+              <p className="text-xs text-muted-foreground">التسويق العقاري</p>
             </div>
           </div>
 
@@ -57,17 +54,6 @@ const Navbar = () => {
 
           {/* Action Buttons */}
           <div className="flex items-center gap-3">
-            {/* Language Toggle */}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={toggleLanguage}
-              className="hidden sm:flex items-center gap-2"
-            >
-              <Globe className="w-4 h-4" />
-              {currentLang === 'ar' ? 'EN' : 'عر'}
-            </Button>
-
             {/* Theme Toggle */}
             <Button
               variant="outline"
@@ -95,12 +81,14 @@ const Navbar = () => {
                 <div className="flex flex-col gap-6 mt-8">
                   {/* Mobile Logo */}
                   <div className="flex items-center gap-3 pb-6 border-b">
-                    <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
-                      <Building className="w-7 h-7 text-white" />
-                    </div>
+                    <img 
+                      src={inspireLogo} 
+                      alt="Inspire Logo" 
+                      className="w-12 h-12 object-contain"
+                    />
                     <div>
-                      <h1 className="text-2xl font-bold text-foreground">عقاري</h1>
-                      <p className="text-sm text-muted-foreground">العقارات المثالية</p>
+                      <h1 className="text-2xl font-bold text-foreground">inspire</h1>
+                      <p className="text-sm text-muted-foreground">التسويق العقاري</p>
                     </div>
                   </div>
 
@@ -123,15 +111,6 @@ const Navbar = () => {
                   <div className="space-y-3 pt-6 border-t">
                     <Button
                       variant="outline"
-                      onClick={toggleLanguage}
-                      className="w-full justify-start gap-3"
-                    >
-                      <Globe className="w-5 h-5" />
-                      تغيير اللغة ({currentLang === 'ar' ? 'English' : 'العربية'})
-                    </Button>
-
-                    <Button
-                      variant="outline"
                       onClick={toggleTheme}
                       className="w-full justify-start gap-3"
                     >
@@ -149,11 +128,11 @@ const Navbar = () => {
                   <div className="bg-muted/50 rounded-lg p-4 space-y-2">
                     <div className="flex items-center gap-2 text-sm">
                       <Phone className="w-4 h-4 text-primary" />
-                      <span>+966 50 123 4567</span>
+                      <span>+20 100 123 4567</span>
                     </div>
                     <div className="flex items-center gap-2 text-sm">
                       <Mail className="w-4 h-4 text-primary" />
-                      <span>info@aqary.sa</span>
+                      <span>info@inspire.com</span>
                     </div>
                   </div>
                 </div>
