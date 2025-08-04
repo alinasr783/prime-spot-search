@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ContactRequestForm } from "@/components/ContactRequestForm";
+import inspireLogo from "@/assets/inspire-logo.png";
 import { 
   MapPin, 
   Bath, 
@@ -18,6 +19,7 @@ import {
   Share2,
   Heart,
   ArrowLeft,
+  ArrowRight,
   Star,
   CheckCircle,
   Building,
@@ -104,6 +106,28 @@ const PropertyDetails = () => {
             alt={property.title}
             className="w-full h-full object-cover"
           />
+          
+          {/* Navigation Arrows */}
+          {property.images.length > 1 && (
+            <>
+              <Button
+                variant="secondary"
+                size="icon"
+                onClick={() => setSelectedImageIndex(selectedImageIndex > 0 ? selectedImageIndex - 1 : property.images.length - 1)}
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/90 backdrop-blur-sm hover:bg-white shadow-lg h-12 w-12"
+              >
+                <ArrowLeft className="w-6 h-6" />
+              </Button>
+              <Button
+                variant="secondary"
+                size="icon"
+                onClick={() => setSelectedImageIndex(selectedImageIndex < property.images.length - 1 ? selectedImageIndex + 1 : 0)}
+                className="absolute right-20 top-1/2 transform -translate-y-1/2 bg-white/90 backdrop-blur-sm hover:bg-white shadow-lg h-12 w-12"
+              >
+                <ArrowRight className="w-6 h-6" />
+              </Button>
+            </>
+          )}
           
           {/* Image Navigation Overlay */}
           {property.images.length > 1 && (
@@ -328,13 +352,30 @@ const PropertyDetails = () => {
                   <div className="w-1 h-8 bg-primary rounded-full"></div>
                   الموقع
                 </h2>
-                <div className="flex items-start gap-4 p-6 rounded-xl bg-primary/5 border border-primary/10">
-                  <MapPin className="w-8 h-8 text-primary mt-1 flex-shrink-0" />
-                  <div>
-                    <p className="text-xl font-semibold text-foreground mb-2">{property.location}</p>
-                    <p className="text-muted-foreground leading-relaxed">
-                      يقع هذا العقار في موقع متميز يوفر سهولة الوصول لجميع الخدمات والمرافق الأساسية مثل المدارس والمستشفيات ومراكز التسوق ووسائل المواصلات العامة.
-                    </p>
+                <div className="space-y-6">
+                  <div className="flex items-start gap-4 p-6 rounded-xl bg-primary/5 border border-primary/10">
+                    <MapPin className="w-8 h-8 text-primary mt-1 flex-shrink-0" />
+                    <div>
+                      <p className="text-xl font-semibold text-foreground mb-2">{property.location}</p>
+                      <p className="text-muted-foreground leading-relaxed">
+                        يقع هذا العقار في موقع متميز يوفر سهولة الوصول لجميع الخدمات والمرافق الأساسية مثل المدارس والمستشفيات ومراكز التسوق ووسائل المواصلات العامة.
+                      </p>
+                    </div>
+                  </div>
+                  
+                  {/* Google Earth Embed */}
+                  <div className="rounded-xl overflow-hidden border border-border/20 shadow-sm">
+                    <iframe
+                      src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3454.123!2d31.235!3d30.044!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2z!5e0!3m2!1sar!2seg!4v1640123456789!5m2!1sar!2seg`}
+                      width="100%"
+                      height="300"
+                      style={{ border: 0 }}
+                      allowFullScreen={true}
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      className="w-full"
+                      title={`خريطة موقع ${property.location}`}
+                    />
                   </div>
                 </div>
               </div>
@@ -348,8 +389,12 @@ const PropertyDetails = () => {
                   <h3 className="text-2xl font-bold text-foreground mb-8 text-center">تواصل معنا</h3>
                   
                   <div className="mb-8 text-center">
-                    <div className="w-20 h-20 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                      <Building className="w-10 h-10 text-white" />
+                    <div className="w-24 h-24 bg-background rounded-full p-3 flex items-center justify-center mx-auto mb-4 shadow-lg border-2 border-border/20">
+                      <img 
+                        src={inspireLogo} 
+                        alt="شركة إنسباير العقارية" 
+                        className="w-full h-full object-contain dark:invert dark:brightness-0 dark:contrast-100"
+                      />
                     </div>
                     <h4 className="text-xl font-bold text-foreground mb-2">شركة إنسباير العقارية</h4>
                     <p className="text-muted-foreground">شريكك المثالي في عالم العقارات</p>
