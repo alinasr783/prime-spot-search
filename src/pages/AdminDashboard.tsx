@@ -20,12 +20,16 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!admin) {
-      navigate('/admin/login');
+    // Simple check - if no admin data in localStorage, redirect
+    const adminData = localStorage.getItem('adminAuth');
+    if (!adminData) {
+      navigate('/admin/login', { replace: true });
     }
-  }, [admin, navigate]);
+  }, [navigate]);
 
-  if (!admin) {
+  // Don't render anything while checking auth
+  const adminData = localStorage.getItem('adminAuth');
+  if (!adminData) {
     return null;
   }
 
