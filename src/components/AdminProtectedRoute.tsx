@@ -8,7 +8,10 @@ interface AdminProtectedRouteProps {
 const AdminProtectedRoute = ({ children }: AdminProtectedRouteProps) => {
   const { admin, loading } = useAuth();
 
+  console.log('🛡️ AdminProtectedRoute - Current state:', { admin, loading });
+
   if (loading) {
+    console.log('⏳ Still loading...');
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -20,9 +23,11 @@ const AdminProtectedRoute = ({ children }: AdminProtectedRouteProps) => {
   }
 
   if (!admin) {
+    console.log('❌ No admin found, redirecting to login');
     return <Navigate to="/admin/login" replace />;
   }
 
+  console.log('✅ Admin authenticated, showing dashboard');
   return <>{children}</>;
 };
 
