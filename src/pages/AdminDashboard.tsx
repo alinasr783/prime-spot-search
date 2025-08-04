@@ -16,7 +16,7 @@ import {
 import inspireLogo from '@/assets/inspire-logo.png';
 
 const AdminDashboard = () => {
-  const { admin, logout } = useAuth();
+  const { logout } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,10 +28,13 @@ const AdminDashboard = () => {
   }, [navigate]);
 
   // Don't render anything while checking auth
-  const adminData = localStorage.getItem('adminAuth');
-  if (!adminData) {
+  const adminDataRaw = localStorage.getItem('adminAuth');
+  if (!adminDataRaw) {
     return null;
   }
+
+  // Parse admin data from localStorage
+  const adminData = JSON.parse(adminDataRaw);
 
   const handleLogout = () => {
     logout();
@@ -91,7 +94,7 @@ const AdminDashboard = () => {
             
             <div className="flex items-center gap-4">
               <div className="text-left">
-                <p className="text-sm font-medium text-foreground">مرحباً، {admin.email}</p>
+                <p className="text-sm font-medium text-foreground">مرحباً، {adminData.email}</p>
                 <p className="text-xs text-muted-foreground">مشرف النظام</p>
               </div>
               <Button variant="outline" onClick={handleLogout}>
