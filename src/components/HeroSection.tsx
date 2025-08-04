@@ -1,5 +1,5 @@
 import SearchForm, { SearchFilters } from "./SearchForm";
-import heroBackground from "@/assets/hero-bg.jpg";
+import calmHeroBackground from "@/assets/calm-hero-bg.jpg";
 
 const HeroSection = () => {
   const handleSearch = (filters: SearchFilters) => {
@@ -12,7 +12,7 @@ const HeroSection = () => {
       {/* Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${heroBackground})` }}
+        style={{ backgroundImage: `url(${calmHeroBackground})` }}
       >
         <div className="absolute inset-0 bg-gradient-to-br from-primary/80 via-primary/60 to-secondary/70"></div>
       </div>

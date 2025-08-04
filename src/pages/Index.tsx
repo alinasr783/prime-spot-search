@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import FeaturedProperties from "@/components/FeaturedProperties";
+import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
@@ -8,6 +9,7 @@ const Index = () => {
       <Navbar />
       <HeroSection />
       <FeaturedProperties />
+      <Footer />
     </div>
   );
 };

@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
 import { Search, MapPin, Home, DollarSign, Bath, Bed } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface SearchFormProps {
   className?: string;
@@ -20,7 +21,15 @@ export interface SearchFilters {
   priceMax: string;
 }
 
+interface Location {
+  id: string;
+  name: string;
+  city: string;
+  governorate: string;
+}
+
 const SearchForm = ({ className, onSearch }: SearchFormProps) => {
+  const [locations, setLocations] = useState<Location[]>([]);
   const [filters, setFilters] = useState<SearchFilters>({
     location: "",
     propertyType: "",
@@ -31,6 +40,25 @@ const SearchForm = ({ className, onSearch }: SearchFormProps) => {
     priceMax: "",
   });
 
+  // Fetch locations from Supabase
+  useEffect(() => {
+    const fetchLocations = async () => {
+      const { data, error } = await supabase
+        .from('locations')
+        .select('*')
+        .eq('is_active', true)
+        .order('name');
+
+      if (error) {
+        console.error('Error fetching locations:', error);
+      } else {
+        setLocations(data || []);
+      }
+    };
+
+    fetchLocations();
+  }, []);
+
   const handleInputChange = (field: keyof SearchFilters, value: string) => {
     setFilters(prev => ({ ...prev, [field]: value }));
   };
@@ -38,36 +66,6 @@ const SearchForm = ({ className, onSearch }: SearchFormProps) => {
   const handleSearch = () => {
     onSearch?.(filters);
   };
-
-  const locations = [
-    "القاهرة",
-    "الجيزة", 
-    "الاسكندرية",
-    "الشرقية",
-    "القليوبية",
-    "الدقهلية",
-    "البحيرة",
-    "المنوفية",
-    "الغربية",
-    "كفر الشيخ",
-    "دمياط",
-    "بورسعيد",
-    "الاسماعيلية",
-    "السويس",
-    "شمال سيناء",
-    "جنوب سيناء",
-    "البحر الأحمر",
-    "الفيوم",
-    "بني سويف",
-    "المنيا",
-    "أسيوط",
-    "سوهاج",
-    "قنا",
-    "أسوان",
-    "الأقصر",
-    "الوادي الجديد",
-    "مطروح"
-  ];
 
   const propertyTypes = [
     "شقة",
@@ -82,7 +80,7 @@ const SearchForm = ({ className, onSearch }: SearchFormProps) => {
   ];
 
   return (
-    <Card className={`p-8 bg-white/95 backdrop-blur-md shadow-2xl border-0 rounded-2xl ${className}`}>
+    <Card className={`p-8 bg-white/95 backdrop-blur-md shadow-2xl border-0 rounded-2xl max-w-4xl mx-auto ${className}`}>
       <div className="text-center mb-8">
         <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
           ابحث عن عقارك المناسب
@@ -97,16 +95,16 @@ const SearchForm = ({ className, onSearch }: SearchFormProps) => {
         <div className="space-y-3">
           <label className="text-base font-bold text-foreground flex items-center gap-2">
             <MapPin className="w-5 h-5 text-primary" />
-            المحافظة
+            المنطقة
           </label>
           <Select value={filters.location} onValueChange={(value) => handleInputChange("location", value)}>
             <SelectTrigger className="h-14 text-right text-lg border-2 border-muted hover:border-primary transition-colors">
-              <SelectValue placeholder="اختر المحافظة" />
+              <SelectValue placeholder="اختر المنطقة" />
             </SelectTrigger>
             <SelectContent className="max-h-60">
               {locations.map((location) => (
-                <SelectItem key={location} value={location} className="text-right">
-                  {location}
+                <SelectItem key={location.id} value={location.name} className="text-right">
+                  {location.name} - {location.city}
                 </SelectItem>
               ))}
             </SelectContent>

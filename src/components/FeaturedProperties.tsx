@@ -2,6 +2,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Bath, Bed, Square, Star, ArrowLeft } from "lucide-react";
+import { useFeaturedProperties } from "@/hooks/useFeaturedProperties";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Property {
   id: string;
@@ -22,60 +24,7 @@ interface Property {
 }
 
 const FeaturedProperties = () => {
-  // بيانات وهمية للعقارات المميزة المصرية
-  const featuredProperties: Property[] = [
-    {
-      id: "1",
-      title: "فيلا فاخرة في القاهرة الجديدة",
-      location: "القاهرة الجديدة - التجمع الخامس",
-      price: 12500000,
-      priceType: "للبيع",
-      bedrooms: 5,
-      bathrooms: 4,
-      area: 450,
-      image: "https://images.unsplash.com/photo-1721322800607-8c38375eef04?w=500&h=300&fit=crop",
-      agent: {
-        name: "",
-        phone: "",
-        image: ""
-      },
-      featured: true
-    },
-    {
-      id: "2", 
-      title: "شقة عصرية في الإسكندرية",
-      location: "الإسكندرية - ستانلي",
-      price: 25000,
-      priceType: "للإيجار شهريًا",
-      bedrooms: 3,
-      bathrooms: 2,
-      area: 180,
-      image: "https://images.unsplash.com/photo-1459767129954-1b1c1f9b9ace?w=500&h=300&fit=crop",
-      agent: {
-        name: "",
-        phone: "",
-        image: ""
-      },
-      featured: true
-    },
-    {
-      id: "3",
-      title: "مكتب تجاري في مدينة نصر",
-      location: "القاهرة - مدينة نصر",
-      price: 35000,
-      priceType: "للإيجار شهريًا",
-      bedrooms: 0,
-      bathrooms: 2,
-      area: 200,
-      image: "https://images.unsplash.com/photo-1496307653780-42ee777d4833?w=500&h=300&fit=crop",
-      agent: {
-        name: "",
-        phone: "",
-        image: ""
-      },
-      featured: true
-    }
-  ];
+  const { properties, loading, error } = useFeaturedProperties();
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('ar-EG', {
@@ -85,6 +34,57 @@ const FeaturedProperties = () => {
       maximumFractionDigits: 0,
     }).format(price);
   };
+
+  if (loading) {
+    return (
+      <section className="py-20 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <Star className="w-6 h-6 text-secondary fill-secondary" />
+              <Badge variant="secondary" className="text-lg px-4 py-2">
+                العقارات المميزة
+              </Badge>
+              <Star className="w-6 h-6 text-secondary fill-secondary" />
+            </div>
+            
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+              اكتشف أفضل العقارات
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[...Array(6)].map((_, index) => (
+              <Card key={index} className="overflow-hidden">
+                <Skeleton className="w-full h-64" />
+                <CardContent className="p-6">
+                  <Skeleton className="h-6 w-3/4 mb-2" />
+                  <Skeleton className="h-4 w-1/2 mb-4" />
+                  <Skeleton className="h-8 w-1/3 mb-4" />
+                  <div className="flex gap-4 mb-4">
+                    <Skeleton className="h-4 w-16" />
+                    <Skeleton className="h-4 w-16" />
+                    <Skeleton className="h-4 w-16" />
+                  </div>
+                  <Skeleton className="h-10 w-full" />
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="py-20 bg-muted/30">
+        <div className="container mx-auto px-4 text-center">
+          <p className="text-destructive">حدث خطأ أثناء تحميل العقارات: {error}</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-20 bg-muted/30">
@@ -110,23 +110,23 @@ const FeaturedProperties = () => {
 
         {/* Properties Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {featuredProperties.map((property) => (
+          {properties.map((property) => (
             <Card key={property.id} className="group overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
               {/* Property Image */}
               <div className="relative overflow-hidden">
                 <img 
-                  src={property.image} 
+                  src={property.images[0] || "https://images.unsplash.com/photo-1721322800607-8c38375eef04?w=500&h=300&fit=crop"} 
                   alt={property.title}
                   className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute top-4 right-4">
                   <Badge variant="secondary" className="bg-secondary/90 text-secondary-foreground font-bold">
-                    {property.priceType}
+                    {property.price_type}
                   </Badge>
                 </div>
                 <div className="absolute top-4 left-4">
                   <Badge className="bg-primary/90 text-primary-foreground">
-                    مميز
+                    مميز جداً
                   </Badge>
                 </div>
               </div>
@@ -146,7 +146,7 @@ const FeaturedProperties = () => {
                   <div className="text-2xl font-bold text-primary mb-4">
                     {formatPrice(property.price)}
                     <span className="text-sm text-muted-foreground font-normal">
-                      {property.priceType.includes('شهريًا') ? ' / شهر' : ''}
+                      {property.price_type.includes('شهريًا') ? ' / شهر' : ''}
                     </span>
                   </div>
                 </div>
