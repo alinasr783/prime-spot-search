@@ -1,92 +1,56 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { useState, useCallback } from 'react';
+import { apiRequest } from '@/lib/queryClient';
 
-interface Admin {
+interface AdminData {
   id: number;
   email: string;
+  created_at: string;
 }
 
-interface AuthContextType {
-  admin: Admin | null;
-  loading: boolean;
-  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
-  logout: () => void;
+interface LoginResult {
+  success: boolean;
+  admin?: AdminData;
+  error?: string;
 }
 
-export const useAuth = (): AuthContextType => {
-  const [admin, setAdmin] = useState<Admin | null>(null);
-  const [loading, setLoading] = useState(true);
+export const useAuth = () => {
+  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    console.log('🚀 useAuth: Checking localStorage for existing admin...');
-    // Check if admin is already logged in
-    const adminData = localStorage.getItem('adminAuth');
-    console.log('📱 Raw localStorage data:', adminData);
-    
-    if (adminData) {
-      try {
-        const parsedAdmin = JSON.parse(adminData);
-        console.log('✅ Found existing admin:', parsedAdmin);
-        setAdmin(parsedAdmin);
-      } catch (error) {
-        console.log('❌ Error parsing admin data:', error);
-        localStorage.removeItem('adminAuth');
+  const login = useCallback(async (email: string, password: string): Promise<LoginResult> => {
+    setIsLoading(true);
+    try {
+      const result = await apiRequest('/api/admin/login', {
+        method: 'POST',
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (result.success && result.admin) {
+        // Store admin data in localStorage
+        localStorage.setItem('adminAuth', JSON.stringify(result.admin));
+        return { success: true, admin: result.admin };
       }
-    } else {
-      console.log('ℹ️ No admin data in localStorage');
+
+      return { success: false, error: 'Invalid credentials' };
+    } catch (error: any) {
+      return { success: false, error: error.message || 'Login failed' };
+    } finally {
+      setIsLoading(false);
     }
-    setLoading(false);
-    console.log('✅ useAuth initialization complete');
   }, []);
 
-  const login = async (email: string, password: string) => {
-    try {
-      setLoading(true);
-      console.log('🔍 Starting login process for:', email);
-      
-      // Query the admins table
-      const { data, error } = await supabase
-        .from('admins')
-        .select('id, email, password')
-        .eq('email', email)
-        .single();
-
-      console.log('📊 Database response:', { data, error });
-
-      if (error) {
-        console.log('❌ Database error:', error);
-        return { success: false, error: 'البيانات غير صحيحة' };
-      }
-
-      if (!data || data.password !== password) {
-        console.log('❌ Invalid credentials');
-        return { success: false, error: 'البيانات غير صحيحة' };
-      }
-
-      const adminData = { id: data.id, email: data.email };
-      console.log('✅ Login successful, saving admin data:', adminData);
-      
-      // Update state and localStorage
-      setAdmin(adminData);
-      localStorage.setItem('adminAuth', JSON.stringify(adminData));
-      
-      // Verify data was saved
-      const savedData = localStorage.getItem('adminAuth');
-      console.log('💾 Data saved in localStorage:', savedData);
-      
-      return { success: true };
-    } catch (error) {
-      console.log('💥 Login error:', error);
-      return { success: false, error: 'حدث خطأ أثناء تسجيل الدخول' };
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const logout = () => {
-    setAdmin(null);
+  const logout = useCallback(() => {
     localStorage.removeItem('adminAuth');
-  };
+  }, []);
 
-  return { admin, loading, login, logout };
+  const getStoredAdmin = useCallback((): AdminData | null => {
+    const stored = localStorage.getItem('adminAuth');
+    return stored ? JSON.parse(stored) : null;
+  }, []);
+
+  return {
+    login,
+    logout,
+    getStoredAdmin,
+    isLoading,
+  };
 };

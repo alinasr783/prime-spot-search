@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useRoute } from "wouter";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useProperty } from "@/hooks/useProperties";
@@ -34,7 +34,8 @@ import {
 import { useState } from "react";
 
 const PropertyDetails = () => {
-  const { id } = useParams<{ id: string }>();
+  const [, params] = useRoute('/property/:id');
+  const id = params?.id;
   const { property, loading, error } = useProperty(id || "");
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 

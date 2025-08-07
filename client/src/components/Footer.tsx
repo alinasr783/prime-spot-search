@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+// Removed Link import as we're using regular anchor tags now
 import { useContactSettings } from "@/hooks/useContactSettings";
 import ContactButtons from "@/components/ContactButtons";
 import { Phone, Mail, MapPin, Facebook, Instagram, Twitter, Linkedin, Youtube } from "lucide-react";
@@ -48,10 +48,10 @@ const Footer = () => {
           <div className="space-y-4">
             <h4 className="text-lg font-semibold text-foreground">روابط سريعة</h4>
             <ul className="space-y-2 text-muted-foreground">
-              <li><Link to="/" className="hover:text-primary transition-colors">الرئيسية</Link></li>
-              <li><Link to="/properties" className="hover:text-primary transition-colors">العقارات</Link></li>
-              <li><Link to="/about" className="hover:text-primary transition-colors">من نحن</Link></li>
-              <li><Link to="/contact" className="hover:text-primary transition-colors">تواصل معنا</Link></li>
+              <li><a href="/" className="hover:text-primary transition-colors">الرئيسية</a></li>
+              <li><a href="/properties" className="hover:text-primary transition-colors">العقارات</a></li>
+              <li><a href="/about" className="hover:text-primary transition-colors">من نحن</a></li>
+              <li><a href="/contact" className="hover:text-primary transition-colors">تواصل معنا</a></li>
             </ul>
           </div>
 
@@ -123,12 +123,12 @@ const Footer = () => {
             </div>
             
             <div className="pt-4 border-t border-border">
-              <Link 
-                to="/admin/login" 
+              <a 
+                href="/admin/login" 
                 className="text-sm text-muted-foreground hover:text-primary transition-colors"
               >
                 لوحة التحكم
-              </Link>
+              </a>
             </div>
           </div>
         </div>

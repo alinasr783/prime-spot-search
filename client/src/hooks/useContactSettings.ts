@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { useQuery } from '@tanstack/react-query';
 
-export interface ContactSettings {
+interface ContactSettings {
   id: string;
   phone?: string;
   email?: string;
@@ -18,64 +17,13 @@ export interface ContactSettings {
 }
 
 export const useContactSettings = () => {
-  const [settings, setSettings] = useState<ContactSettings | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchContactSettings = async () => {
-    try {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from('contact_settings')
-        .select('*')
-        .limit(1)
-        .single();
-
-      if (error) {
-        setError(error.message);
-        return;
-      }
-
-      setSettings(data);
-      setError(null);
-    } catch (err) {
-      setError('حدث خطأ أثناء تحميل إعدادات التواصل');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const updateContactSettings = async (updatedSettings: Partial<ContactSettings>) => {
-    try {
-      if (!settings) return { success: false, error: 'لا توجد إعدادات للتحديث' };
-
-      const { data, error } = await supabase
-        .from('contact_settings')
-        .update(updatedSettings)
-        .eq('id', settings.id)
-        .select()
-        .single();
-
-      if (error) {
-        return { success: false, error: error.message };
-      }
-
-      setSettings(data);
-      return { success: true };
-    } catch (err) {
-      return { success: false, error: 'حدث خطأ أثناء تحديث الإعدادات' };
-    }
-  };
-
-  useEffect(() => {
-    fetchContactSettings();
-  }, []);
+  const { data: settings, isLoading: loading, error } = useQuery({
+    queryKey: ['/api/contact-settings'],
+  });
 
   return {
-    settings,
+    settings: settings as ContactSettings | undefined,
     loading,
     error,
-    updateContactSettings,
-    refreshSettings: fetchContactSettings
   };
 };

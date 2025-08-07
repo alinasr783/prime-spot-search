@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'wouter';
 
 const ScrollToTop = () => {
-  const { pathname } = useLocation();
+  const [pathname] = useLocation();
 
   useEffect(() => {
     // Smooth scroll to top when route changes

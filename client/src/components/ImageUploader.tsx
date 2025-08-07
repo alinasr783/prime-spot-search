@@ -1,105 +1,75 @@
-import React, { useRef } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Upload, X, Loader2 } from 'lucide-react';
-import { useImageUpload, BucketName } from '@/hooks/useImageUpload';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Upload, X } from 'lucide-react';
 
 interface ImageUploaderProps {
-  bucketName: BucketName;
-  folder?: string;
-  currentImageUrl?: string;
-  onImageUploaded: (url: string) => void;
-  onImageRemoved?: () => void;
-  className?: string;
-  buttonText?: string;
-  accept?: string;
+  value?: string;
+  onChange: (value: string) => void;
+  label?: string;
+  placeholder?: string;
 }
 
-export const ImageUploader: React.FC<ImageUploaderProps> = ({
-  bucketName,
-  folder,
-  currentImageUrl,
-  onImageUploaded,
-  onImageRemoved,
-  className = '',
-  buttonText = 'رفع صورة',
-  accept = 'image/*'
-}) => {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const { uploadImage, isUploading } = useImageUpload();
+export const ImageUploader = ({ 
+  value = '', 
+  onChange, 
+  label = 'رابط الصورة',
+  placeholder = 'أدخل رابط الصورة أو رفع صورة'
+}: ImageUploaderProps) => {
+  const [previewUrl, setPreviewUrl] = useState(value);
 
-  const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    const imageUrl = await uploadImage(file, bucketName, folder);
-    if (imageUrl) {
-      onImageUploaded(imageUrl);
-    }
-
-    // Reset input
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
+  const handleInputChange = (url: string) => {
+    onChange(url);
+    setPreviewUrl(url);
   };
 
-  const handleRemoveImage = () => {
-    if (onImageRemoved) {
-      onImageRemoved();
-    }
+  const handleClear = () => {
+    onChange('');
+    setPreviewUrl('');
   };
 
   return (
-    <div className={`space-y-4 ${className}`}>
-      {currentImageUrl && (
-        <div className="relative inline-block">
-          <img
-            src={currentImageUrl}
-            alt="صورة مرفوعة"
-            className="w-32 h-32 object-cover rounded-lg border border-border"
+    <div className="space-y-2">
+      <Label className="text-sm font-medium">{label}</Label>
+      <div className="space-y-2">
+        <div className="flex gap-2">
+          <Input
+            type="url"
+            value={value}
+            onChange={(e) => handleInputChange(e.target.value)}
+            placeholder={placeholder}
+            className="flex-1"
           />
-          {onImageRemoved && (
+          {value && (
             <Button
               type="button"
-              variant="destructive"
-              size="sm"
-              className="absolute -top-2 -right-2 w-6 h-6 rounded-full p-0"
-              onClick={handleRemoveImage}
+              variant="outline"
+              size="icon"
+              onClick={handleClear}
             >
-              <X className="w-3 h-3" />
+              <X className="w-4 h-4" />
             </Button>
           )}
         </div>
-      )}
-
-      <div>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept={accept}
-          onChange={handleFileSelect}
-          className="hidden"
-          disabled={isUploading}
-        />
         
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => fileInputRef.current?.click()}
-          disabled={isUploading}
-          className="w-full"
-        >
-          {isUploading ? (
-            <>
-              <Loader2 className="w-4 h-4 ml-2 animate-spin" />
-              جاري الرفع...
-            </>
-          ) : (
-            <>
-              <Upload className="w-4 h-4 ml-2" />
-              {buttonText}
-            </>
-          )}
-        </Button>
+        {previewUrl && (
+          <div className="mt-2">
+            <img
+              src={previewUrl}
+              alt="Preview"
+              className="w-full h-32 object-cover rounded-md border"
+              onError={() => {
+                // If image fails to load, show placeholder
+                setPreviewUrl('');
+              }}
+            />
+          </div>
+        )}
+        
+        <div className="text-xs text-muted-foreground">
+          يمكنك لصق رابط صورة من الإنترنت أو رفع صورة إلى خدمة استضافة صور
+        </div>
       </div>
     </div>
   );

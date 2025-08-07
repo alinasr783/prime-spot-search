@@ -1,9 +1,9 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation } from "wouter";
 import SearchForm, { SearchFilters } from "./SearchForm";
 import sereneHeroBackground from "@/assets/serene-hero-bg.jpg";
 
 const HeroSection = () => {
-  const navigate = useNavigate();
+  const [, setLocation] = useLocation();
 
   const handleSearch = (filters: SearchFilters) => {
     const searchParams = new URLSearchParams();
@@ -14,7 +14,7 @@ const HeroSection = () => {
       }
     });
     
-    navigate(`/properties?${searchParams.toString()}`);
+    setLocation(`/properties?${searchParams.toString()}`);
   };
 
   return (

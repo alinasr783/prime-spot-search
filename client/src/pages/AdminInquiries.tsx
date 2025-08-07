@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -22,7 +22,7 @@ import {
 import inspireLogo from '@/assets/inspire-logo.png';
 
 const AdminInquiries = () => {
-  const navigate = useNavigate();
+  const [location, setLocation] = useLocation();
   const { toast } = useToast();
   const { inquiries, loading } = useInquiries();
   
@@ -33,12 +33,12 @@ const AdminInquiries = () => {
   useEffect(() => {
     const adminData = localStorage.getItem('adminAuth');
     if (!adminData) {
-      navigate('/admin/login', { replace: true });
+      setLocation('/admin/login');
     }
-  }, [navigate]);
+  }, [setLocation]);
 
   const handleBack = () => {
-    navigate('/admin/dashboard');
+    setLocation('/admin/dashboard');
   };
 
   const updateInquiryStatus = async (inquiryId, newStatus) => {

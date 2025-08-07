@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 import { Phone, Mail, MessageSquare, Loader2 } from "lucide-react";
 
 interface ContactRequestFormProps {
@@ -33,21 +33,21 @@ export const ContactRequestForm = ({ propertyId, propertyTitle, trigger }: Conta
     setLoading(true);
 
     try {
-      const { error } = await supabase
-        .from('inquiries')
-        .insert([
-          {
-            property_id: propertyId,
-            name: formData.name,
-            email: formData.email || null,
-            phone: formData.phone || null,
-            message: `${formData.message}\n\nالعقار: ${propertyTitle}`,
-            inquiry_type: formData.inquiry_type,
-            status: 'جديد'
-          }
-        ]);
+      await apiRequest('/api/inquiries', {
+        method: 'POST',
+        body: JSON.stringify({
+          property_id: propertyId,
+          name: formData.name,
+          email: formData.email || null,
+          phone: formData.phone || null,
+          message: `${formData.message}\n\nالعقار: ${propertyTitle}`,
+          inquiry_type: formData.inquiry_type,
+          status: 'جديد'
+        })
+      });
 
-      if (error) throw error;
+      // Invalidate inquiries cache
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/inquiries'] });
 
       toast({
         title: "تم إرسال طلبك بنجاح",

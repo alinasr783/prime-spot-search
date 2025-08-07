@@ -2,7 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Bath, Bed, Square, ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useLocation } from "wouter";
 
 interface Property {
   id: string;
@@ -24,7 +24,7 @@ interface PropertyCardProps {
 }
 
 const PropertyCard = ({ property, showFeaturedBadge = false }: PropertyCardProps) => {
-  const navigate = useNavigate();
+  const [, setLocation] = useLocation();
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('ar-EG', {
@@ -36,7 +36,7 @@ const PropertyCard = ({ property, showFeaturedBadge = false }: PropertyCardProps
   };
 
   const handleViewDetails = () => {
-    navigate(`/property/${property.id}`);
+    setLocation(`/property/${property.id}`);
   };
 
   return (

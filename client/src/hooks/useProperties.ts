@@ -1,140 +1,90 @@
-import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { SearchFilters } from "@/components/SearchFilters";
+import { useQuery } from '@tanstack/react-query';
 
-interface Property {
+export interface Property {
   id: string;
   title: string;
+  description?: string;
   location: string;
-  price: number;
-  price_type: string;
-  bedrooms: number;
-  bathrooms: number;
-  area: number;
-  images: string[];
+  price: string;
+  price_type?: string;
   property_type: string;
-  description: string;
-  features: string[];
-  amenities: string[];
-  is_featured: boolean;
-  agent_name: string;
-  agent_phone: string;
-  agent_email: string;
-  created_at: string;
+  bedrooms?: number;
+  bathrooms?: number;
+  area?: string;
   parking?: number;
+  images: string[];
+  features?: string[];
+  amenities?: string[];
+  agent_name?: string;
+  agent_phone?: string;
+  agent_email?: string;
+  agent_image?: string;
+  is_featured: boolean;
+  is_active: boolean;
+  special_type?: string;
   floor_number?: string;
   build_year?: number;
-  special_type?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface SearchFilters {
+  location?: string;
+  propertyType?: string;
+  priceType?: string;
+  bedrooms?: string;
+  bathrooms?: string;
+  priceMin?: string;
+  priceMax?: string;
 }
 
 export const useProperties = (filters?: SearchFilters) => {
-  const [properties, setProperties] = useState<Property[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchProperties = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      let query = supabase
-        .from('properties')
-        .select('*')
-        .eq('is_active', true)
-        .order('created_at', { ascending: false });
-
-      // Apply filters if provided
-      if (filters) {
-        if (filters.location && filters.location !== "" && filters.location !== "all") {
-          query = query.ilike('location', `%${filters.location}%`);
-        }
-        
-        if (filters.propertyType && filters.propertyType !== "" && filters.propertyType !== "all") {
-          query = query.eq('property_type', filters.propertyType);
-        }
-        
-        if (filters.priceType && filters.priceType !== "" && filters.priceType !== "all") {
-          query = query.eq('price_type', filters.priceType);
-        }
-        
-        if (filters.bedrooms && filters.bedrooms !== "" && filters.bedrooms !== "all") {
-          if (filters.bedrooms === "5+") {
-            query = query.gte('bedrooms', 5);
-          } else {
-            query = query.eq('bedrooms', parseInt(filters.bedrooms));
-          }
-        }
-        
-        if (filters.bathrooms && filters.bathrooms !== "" && filters.bathrooms !== "all") {
-          if (filters.bathrooms === "4+") {
-            query = query.gte('bathrooms', 4);
-          } else {
-            query = query.eq('bathrooms', parseInt(filters.bathrooms));
-          }
-        }
-        
-        if (filters.priceMin && filters.priceMin !== "") {
-          query = query.gte('price', parseFloat(filters.priceMin));
-        }
-        
-        if (filters.priceMax && filters.priceMax !== "") {
-          query = query.lte('price', parseFloat(filters.priceMax));
-        }
+  const queryParams = new URLSearchParams();
+  
+  if (filters) {
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value) {
+        queryParams.append(key, value);
       }
+    });
+  }
 
-      const { data, error } = await query;
+  const queryString = queryParams.toString();
+  const url = queryString ? `/api/properties?${queryString}` : '/api/properties';
 
-      if (error) throw error;
+  const { data: properties, isLoading: loading, error, refetch } = useQuery({
+    queryKey: [url],
+  });
 
-      setProperties(data || []);
-    } catch (err) {
-      console.error('Error fetching properties:', err);
-      setError(err instanceof Error ? err.message : 'حدث خطأ غير متوقع');
-    } finally {
-      setLoading(false);
-    }
+  return {
+    properties: properties as Property[] || [],
+    loading,
+    error,
+    refetch,
   };
-
-  useEffect(() => {
-    fetchProperties();
-  }, [filters]);
-
-  return { properties, loading, error, refetch: fetchProperties };
 };
 
 export const useProperty = (id: string) => {
-  const [property, setProperty] = useState<Property | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data: property, isLoading: loading, error } = useQuery({
+    queryKey: [`/api/properties/${id}`],
+    enabled: !!id,
+  });
 
-  useEffect(() => {
-    const fetchProperty = async () => {
-      try {
-        setLoading(true);
-        setError(null);
+  return {
+    property: property as Property | undefined,
+    loading,
+    error,
+  };
+};
 
-        const { data, error } = await supabase
-          .from('properties')
-          .select('*')
-          .eq('id', id)
-          .eq('is_active', true)
-          .maybeSingle();
+export const useFeaturedProperties = () => {
+  const { data: properties, isLoading: loading, error } = useQuery({
+    queryKey: ['/api/properties/featured'],
+  });
 
-        if (error) throw error;
-
-        setProperty(data);
-      } catch (err) {
-        console.error('Error fetching property:', err);
-        setError(err instanceof Error ? err.message : 'حدث خطأ غير متوقع');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (id) {
-      fetchProperty();
-    }
-  }, [id]);
-
-  return { property, loading, error };
+  return {
+    properties: properties as Property[] || [],
+    loading,
+    error,
+  };
 };

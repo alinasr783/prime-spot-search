@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useLocation } from "wouter";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PropertyCard from "@/components/PropertyCard";
@@ -11,17 +11,24 @@ import { Badge } from "@/components/ui/badge";
 import { Filter, Grid, List } from "lucide-react";
 
 const Properties = () => {
-  const [searchParams] = useSearchParams();
-  const [filters, setFilters] = useState<SearchFiltersType>({
-    location: searchParams.get("location") || "",
-    propertyType: searchParams.get("propertyType") || "",
-    priceType: searchParams.get("priceType") || "",
-    bedrooms: searchParams.get("bedrooms") || "",
-    bathrooms: searchParams.get("bathrooms") || "",
-    priceMin: searchParams.get("priceMin") || "",
-    priceMax: searchParams.get("priceMax") || "",
-  });
-  const [appliedFilters, setAppliedFilters] = useState<SearchFiltersType>(filters);
+  const [location] = useLocation();
+  
+  // Parse URL search params manually for wouter
+  const getSearchParams = () => {
+    const params = new URLSearchParams(window.location.search);
+    return {
+      location: params.get("location") || "",
+      propertyType: params.get("propertyType") || "",
+      priceType: params.get("priceType") || "",
+      bedrooms: params.get("bedrooms") || "",
+      bathrooms: params.get("bathrooms") || "",
+      priceMin: params.get("priceMin") || "",
+      priceMax: params.get("priceMax") || "",
+    };
+  };
+
+  const [filters, setFilters] = useState<SearchFiltersType>(getSearchParams());
+  const [appliedFilters, setAppliedFilters] = useState<SearchFiltersType>(getSearchParams());
   const [showFilters, setShowFilters] = useState(false);
   const [viewType, setViewType] = useState<'grid' | 'list'>('grid');
 
@@ -29,18 +36,10 @@ const Properties = () => {
 
   useEffect(() => {
     // Initialize filters from URL params and apply them immediately
-    const initialFilters = {
-      location: searchParams.get("location") || "",
-      propertyType: searchParams.get("propertyType") || "",
-      priceType: searchParams.get("priceType") || "",
-      bedrooms: searchParams.get("bedrooms") || "",
-      bathrooms: searchParams.get("bathrooms") || "",
-      priceMin: searchParams.get("priceMin") || "",
-      priceMax: searchParams.get("priceMax") || "",
-    };
+    const initialFilters = getSearchParams();
     setFilters(initialFilters);
     setAppliedFilters(initialFilters);
-  }, [searchParams]);
+  }, [location]);
 
   // Remove the useEffect that was causing infinite re-renders
   // The useProperties hook will automatically refetch when appliedFilters change

@@ -1,5 +1,5 @@
 import { useAuth } from '@/hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'wouter';
 import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -23,16 +23,16 @@ import inspireLogo from '@/assets/inspire-logo.png';
 
 const AdminDashboard = () => {
   const { logout } = useAuth();
-  const navigate = useNavigate();
+  const [location, setLocation] = useLocation();
   const { totalProperties, newInquiries, featuredProperties, totalLocations, loading, error } = useDashboardStats();
 
   useEffect(() => {
     // Simple check - if no admin data in localStorage, redirect
     const adminData = localStorage.getItem('adminAuth');
     if (!adminData) {
-      navigate('/admin/login', { replace: true });
+      setLocation('/admin/login');
     }
-  }, [navigate]);
+  }, [setLocation]);
 
   // Don't render anything while checking auth
   const adminDataRaw = localStorage.getItem('adminAuth');
@@ -45,7 +45,7 @@ const AdminDashboard = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/admin/login');
+    setLocation('/admin/login');
   };
 
   const dashboardItems = [
@@ -127,7 +127,7 @@ const AdminDashboard = () => {
             <Card 
               key={item.path}
               className="hover:shadow-lg transition-all duration-200 cursor-pointer border-border/50 active:scale-95 sm:active:scale-100"
-              onClick={() => navigate(item.path)}
+              onClick={() => setLocation(item.path)}
             >
               <CardHeader className="pb-3 px-4 sm:px-6 pt-4 sm:pt-6">
                 <div className="flex items-center gap-3">

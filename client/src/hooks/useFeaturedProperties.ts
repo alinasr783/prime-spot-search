@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { useQuery } from '@tanstack/react-query';
 
 interface Property {
   id: string;
@@ -16,35 +15,13 @@ interface Property {
 }
 
 export const useFeaturedProperties = () => {
-  const [properties, setProperties] = useState<Property[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data: properties, isLoading: loading, error } = useQuery({
+    queryKey: ['/api/properties/featured'],
+  });
 
-  useEffect(() => {
-    const fetchFeaturedProperties = async () => {
-      try {
-        setLoading(true);
-        const { data, error } = await supabase
-          .from('properties')
-          .select('*')
-          .eq('special_type', 'مميزة جدا')
-          .eq('is_active', true)
-          .limit(6);
-
-        if (error) {
-          throw error;
-        }
-
-        setProperties(data || []);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'حدث خطأ أثناء جلب البيانات');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchFeaturedProperties();
-  }, []);
-
-  return { properties, loading, error };
+  return {
+    properties: properties as Property[] || [],
+    loading,
+    error,
+  };
 };

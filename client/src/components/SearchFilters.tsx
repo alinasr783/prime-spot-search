@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { MapPin, Home, DollarSign, Bath, Bed, RotateCcw } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { useLocations } from "@/hooks/useLocations";
 
 export interface SearchFilters {
   location: string;
@@ -30,25 +30,7 @@ interface SearchFiltersProps {
 }
 
 const SearchFilters = ({ filters, onFiltersChange, onApplyFilters }: SearchFiltersProps) => {
-  const [locations, setLocations] = useState<Location[]>([]);
-
-  useEffect(() => {
-    const fetchLocations = async () => {
-      const { data, error } = await supabase
-        .from('locations')
-        .select('*')
-        .eq('is_active', true)
-        .order('name');
-
-      if (error) {
-        console.error('Error fetching locations:', error);
-      } else {
-        setLocations(data || []);
-      }
-    };
-
-    fetchLocations();
-  }, []);
+  const { locations } = useLocations();
 
   const handleInputChange = (field: keyof SearchFilters, value: string) => {
     const newFilters = { ...filters, [field]: value };

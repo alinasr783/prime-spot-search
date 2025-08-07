@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -18,7 +18,7 @@ const AdminLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
   
   const { login } = useAuth();
-  const navigate = useNavigate();
+  const [location, setLocation] = useLocation();
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -34,8 +34,8 @@ const AdminLogin = () => {
           title: "تم تسجيل الدخول بنجاح",
           description: "مرحباً بك في لوحة التحكم",
         });
-        // Direct navigation with window.location for guaranteed redirect
-        window.location.href = '/admin/dashboard';
+        // Navigate to dashboard
+        setLocation('/admin/dashboard');
       } else {
         setError(result.error || 'حدث خطأ أثناء تسجيل الدخول');
       }

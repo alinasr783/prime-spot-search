@@ -1,17 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Star, ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useLocation } from "wouter";
 import { useFeaturedProperties } from "@/hooks/useFeaturedProperties";
 import { Skeleton } from "@/components/ui/skeleton";
 import PropertyCard from "@/components/PropertyCard";
 
 const FeaturedProperties = () => {
-  const navigate = useNavigate();
+  const [, setLocation] = useLocation();
   const { properties, loading, error } = useFeaturedProperties();
 
   const handleViewAllProperties = () => {
-    navigate('/properties');
+    setLocation('/properties');
   };
 
   if (loading) {
@@ -59,7 +59,7 @@ const FeaturedProperties = () => {
     return (
       <section className="py-20 bg-muted/30">
         <div className="container mx-auto px-4 text-center">
-          <p className="text-destructive">حدث خطأ أثناء تحميل العقارات: {error}</p>
+          <p className="text-destructive">حدث خطأ أثناء تحميل العقارات</p>
         </div>
       </section>
     );

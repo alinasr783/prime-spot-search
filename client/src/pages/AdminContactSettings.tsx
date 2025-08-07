@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -24,7 +24,7 @@ import {
 import inspireLogo from '@/assets/inspire-logo.png';
 
 const AdminContactSettings = () => {
-  const navigate = useNavigate();
+  const [location, setLocation] = useLocation();
   const { toast } = useToast();
   const { settings: contactSettings, loading } = useContactSettings();
   
@@ -45,9 +45,9 @@ const AdminContactSettings = () => {
   useEffect(() => {
     const adminData = localStorage.getItem('adminAuth');
     if (!adminData) {
-      navigate('/admin/login', { replace: true });
+      setLocation('/admin/login');
     }
-  }, [navigate]);
+  }, [setLocation]);
 
   // Load existing settings
   useEffect(() => {
@@ -68,7 +68,7 @@ const AdminContactSettings = () => {
   }, [contactSettings]);
 
   const handleBack = () => {
-    navigate('/admin/dashboard');
+    setLocation('/admin/dashboard');
   };
 
   const handleInputChange = (field, value) => {
