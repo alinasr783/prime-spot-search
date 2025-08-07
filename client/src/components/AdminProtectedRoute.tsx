@@ -1,16 +1,17 @@
 import { useAuth } from '@/hooks/useAuth';
-import { Navigate } from 'react-router-dom';
+import { Redirect } from 'wouter';
 
 interface AdminProtectedRouteProps {
   children: React.ReactNode;
 }
 
 const AdminProtectedRoute = ({ children }: AdminProtectedRouteProps) => {
-  const { admin, loading } = useAuth();
+  const { getStoredAdmin, isLoading } = useAuth();
+  const admin = getStoredAdmin();
 
-  console.log('🛡️ AdminProtectedRoute - Current state:', { admin, loading });
+  console.log('🛡️ AdminProtectedRoute - Current state:', { admin, isLoading });
 
-  if (loading) {
+  if (isLoading) {
     console.log('⏳ Still loading...');
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -24,7 +25,7 @@ const AdminProtectedRoute = ({ children }: AdminProtectedRouteProps) => {
 
   if (!admin) {
     console.log('❌ No admin found, redirecting to login');
-    return <Navigate to="/admin/login" replace />;
+    return <Redirect to="/admin/login" />;
   }
 
   console.log('✅ Admin authenticated, showing dashboard');
