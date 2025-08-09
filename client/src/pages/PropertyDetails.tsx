@@ -1,43 +1,68 @@
 import { useRoute } from "wouter";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { useProperty } from "@/hooks/useProperties";
+import { useProperty, useRelatedProperties } from "@/hooks/useProperties";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ContactRequestForm } from "@/components/ContactRequestForm";
 import ContactButtons from "@/components/ContactButtons";
+import PropertyCard from "@/components/PropertyCard";
 import inspireLogo from "@/assets/inspire-logo.png";
 import { 
-  MapPin, 
-  Bath, 
-  Bed, 
-  Square, 
-  Calendar,
-  Phone,
-  Mail,
-  Share2,
-  Heart,
-  ArrowLeft,
-  ArrowRight,
-  Star,
-  CheckCircle,
-  Building,
-  Ruler,
-  Car,
-  Home,
-  MessageSquare,
-  Eye,
-  Clock
+  MapPin, Bath, Bed, Square, Calendar,
+  Phone, Mail, Share2, Heart, ArrowLeft,
+  ArrowRight, Star, CheckCircle, Building,
+  Ruler, Car, Home, MessageSquare, Eye, Clock,
+  Landmark, MoveRight, DollarSign, RulerIcon
 } from "lucide-react";
 import { useState } from "react";
+import { useMediaQuery } from "@/hooks/use-media-query";
+
+interface Property {
+  id: string;
+  title: string;
+  description?: string;
+  location: string;
+  price: number;
+  price_type: string;
+  property_type: string;
+  bedrooms: number;
+  bathrooms: number;
+  parking?: number;
+  area?: number;
+  build_year?: number;
+  floor_number?: string;
+  images: string[];
+  features: string[];
+  amenities: string[];
+  agent_name?: string;
+  agent_phone?: string;
+  agent_email?: string;
+  agent_image?: string;
+  is_featured: boolean;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+  special_type?: string;
+  governorate?: string;
+  city?: string;
+  neighborhood?: string;
+}
 
 const PropertyDetails = () => {
   const [, params] = useRoute('/property/:id');
   const id = params?.id;
   const { property, loading, error } = useProperty(id || "");
+  const { 
+    nearbyProperties, 
+    similarPriceProperties, 
+    similarAreaProperties,
+    loading: relatedLoading 
+  } = useRelatedProperties(id || "");
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('ar-EG', {
@@ -99,7 +124,7 @@ const PropertyDetails = () => {
   return (
     <div className="min-h-screen bg-background" dir="rtl">
       <Navbar />
-      
+
       <div className="pt-16">
         {/* Property Images - Hero Section */}
         <div className="relative w-full h-[60vh] md:h-[70vh] bg-muted overflow-hidden">
@@ -108,7 +133,7 @@ const PropertyDetails = () => {
             alt={property.title}
             className="w-full h-full object-cover"
           />
-          
+
           {/* Navigation Arrows */}
           {property.images.length > 1 && (
             <>
@@ -130,7 +155,7 @@ const PropertyDetails = () => {
               </Button>
             </>
           )}
-          
+
           {/* Image Navigation Overlay */}
           {property.images.length > 1 && (
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
@@ -165,7 +190,6 @@ const PropertyDetails = () => {
           </div>
         </div>
 
-        
         {/* Content Container */}
         <div className="container mx-auto px-4 py-8 max-w-7xl">
           {/* Property Header */}
@@ -183,24 +207,26 @@ const PropertyDetails = () => {
                     {property.price_type}
                   </Badge>
                 </div>
-                
+
                 <h1 className="text-3xl lg:text-4xl font-bold text-foreground mb-4 leading-tight">
                   {property.title}
                 </h1>
-                
+
                 <div className="flex items-center text-muted-foreground mb-6">
                   <MapPin className="w-5 h-5 ml-2 text-primary" />
                   <span className="text-lg">{property.location}</span>
                 </div>
               </div>
-              
+
               <div className="lg:text-left">
                 <div className="text-4xl font-bold text-primary mb-2">
                   {formatPrice(property.price)}
                 </div>
-                <span className="text-muted-foreground">
-                  {property.price_type.includes('شهريًا') ? 'شهرياً' : 'إجمالي'}
-                </span>
+                {property.area && (
+                  <div className="text-lg text-muted-foreground">
+                    {formatPrice(Math.round(property.price / property.area))} / م²
+                  </div>
+                )}
               </div>
             </div>
 
@@ -218,11 +244,13 @@ const PropertyDetails = () => {
                 <span className="font-bold text-2xl text-foreground">{property.bathrooms}</span>
                 <span className="text-sm text-muted-foreground">حمام</span>
               </div>
-              <div className="flex flex-col items-center text-center p-4 rounded-xl bg-primary/5 border border-primary/10">
-                <Square className="w-8 h-8 text-primary mb-3" />
-                <span className="font-bold text-2xl text-foreground">{property.area}</span>
-                <span className="text-sm text-muted-foreground">م²</span>
-              </div>
+              {property.area && (
+                <div className="flex flex-col items-center text-center p-4 rounded-xl bg-primary/5 border border-primary/10">
+                  <Square className="w-8 h-8 text-primary mb-3" />
+                  <span className="font-bold text-2xl text-foreground">{property.area}</span>
+                  <span className="text-sm text-muted-foreground">م²</span>
+                </div>
+              )}
               <div className="flex flex-col items-center text-center p-4 rounded-xl bg-muted/50 border border-border/50">
                 <Building className="w-8 h-8 text-muted-foreground mb-3" />
                 <span className="font-bold text-lg text-foreground">{property.property_type}</span>
@@ -268,7 +296,7 @@ const PropertyDetails = () => {
                     مميزات العقار
                   </h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {property.features.map((feature, index) => (
+                    {property.features.map((feature: string, index: number) => (
                       <div key={index} className="flex items-center gap-3 p-3 rounded-xl bg-primary/5 border border-primary/10">
                         <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
                         <span className="text-foreground font-medium">{feature}</span>
@@ -286,7 +314,7 @@ const PropertyDetails = () => {
                     المرافق والخدمات
                   </h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {property.amenities.map((amenity, index) => (
+                    {property.amenities.map((amenity: string, index: number) => (
                       <div key={index} className="flex items-center gap-3 p-3 rounded-xl bg-secondary/5 border border-secondary/10">
                         <CheckCircle className="w-5 h-5 text-secondary flex-shrink-0" />
                         <span className="text-foreground font-medium">{amenity}</span>
@@ -308,10 +336,12 @@ const PropertyDetails = () => {
                       <span className="text-muted-foreground font-medium">نوع العقار:</span>
                       <span className="font-semibold text-foreground">{property.property_type}</span>
                     </div>
-                    <div className="flex justify-between items-center py-3 border-b border-border">
-                      <span className="text-muted-foreground font-medium">المساحة:</span>
-                      <span className="font-semibold text-foreground">{property.area} متر مربع</span>
-                    </div>
+                    {property.area && (
+                      <div className="flex justify-between items-center py-3 border-b border-border">
+                        <span className="text-muted-foreground font-medium">المساحة:</span>
+                        <span className="font-semibold text-foreground">{property.area} متر مربع</span>
+                      </div>
+                    )}
                     <div className="flex justify-between items-center py-3 border-b border-border">
                       <span className="text-muted-foreground font-medium">عدد غرف النوم:</span>
                       <span className="font-semibold text-foreground">{property.bedrooms || 'غير محدد'}</span>
@@ -364,7 +394,7 @@ const PropertyDetails = () => {
                       </p>
                     </div>
                   </div>
-                  
+
                   {/* Google Maps Simple Embed */}
                   <div className="rounded-xl overflow-hidden border border-border/20 shadow-sm">
                     <iframe
@@ -381,6 +411,72 @@ const PropertyDetails = () => {
                   </div>
                 </div>
               </div>
+
+              {/* Related Properties Sections */}
+              <div className="space-y-8">
+                {/* Nearby Properties */}
+                {nearbyProperties && nearbyProperties.length > 0 && (
+                  <div className="bg-white rounded-2xl shadow-sm border border-border/50 p-8">
+                    <div className="flex items-center justify-between mb-6">
+                      <h2 className="text-2xl font-bold text-foreground flex items-center gap-3">
+                        <div className="w-1 h-8 bg-secondary rounded-full"></div>
+                        عقارات أخرى في المنطقة
+                      </h2>
+                      <Button variant="link" className="text-primary hover:text-primary/80">
+                        عرض الكل
+                        <MoveRight className="w-4 h-4 mr-2" />
+                      </Button>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {nearbyProperties.slice(0, isMobile ? 2 : 3).map((property: Property) => (
+                        <PropertyCard key={property.id} property={property} />
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Similar Price Properties */}
+                {similarPriceProperties && similarPriceProperties.length > 0 && (
+                  <div className="bg-white rounded-2xl shadow-sm border border-border/50 p-8">
+                    <div className="flex items-center justify-between mb-6">
+                      <h2 className="text-2xl font-bold text-foreground flex items-center gap-3">
+                        <div className="w-1 h-8 bg-primary rounded-full"></div>
+                        عقارات متقاربة في السعر
+                      </h2>
+                      <Button variant="link" className="text-primary hover:text-primary/80">
+                        عرض الكل
+                        <MoveRight className="w-4 h-4 mr-2" />
+                      </Button>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {similarPriceProperties.slice(0, isMobile ? 2 : 3).map((property: Property) => (
+                        <PropertyCard key={property.id} property={property} />
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Similar Area Properties */}
+                {similarAreaProperties && similarAreaProperties.length > 0 && (
+                  <div className="bg-white rounded-2xl shadow-sm border border-border/50 p-8">
+                    <div className="flex items-center justify-between mb-6">
+                      <h2 className="text-2xl font-bold text-foreground flex items-center gap-3">
+                        <div className="w-1 h-8 bg-accent rounded-full"></div>
+                        عقارات متقاربة في المساحة
+                      </h2>
+                      <Button variant="link" className="text-primary hover:text-primary/80">
+                        عرض الكل
+                        <MoveRight className="w-4 h-4 mr-2" />
+                      </Button>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {similarAreaProperties.slice(0, isMobile ? 2 : 3).map((property: Property) => (
+                        <PropertyCard key={property.id} property={property} />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Contact Card */}
@@ -389,7 +485,7 @@ const PropertyDetails = () => {
                 {/* Company Contact Card */}
                 <div className="bg-white rounded-2xl shadow-sm border border-border/50 p-8 sticky top-4">
                   <h3 className="text-2xl font-bold text-foreground mb-8 text-center">تواصل معنا</h3>
-                  
+
                   <div className="mb-8 text-center">
                     <div className="w-24 h-24 bg-background rounded-full p-3 flex items-center justify-center mx-auto mb-4 shadow-lg border-2 border-border/20">
                       <img 
@@ -418,7 +514,7 @@ const PropertyDetails = () => {
                         </Button>
                       }
                     />
-                    
+
                     <ContactButtons 
                       direction="vertical" 
                       size="lg" 
@@ -427,7 +523,7 @@ const PropertyDetails = () => {
                       propertyId={property.id}
                       className="space-y-4"
                     />
-                    
+
                     {property.agent_phone && (
                       <Button variant="outline" className="w-full h-12 text-lg rounded-xl border-2 hover:bg-primary/5" asChild>
                         <a href={`tel:${property.agent_phone}`}>
@@ -436,7 +532,7 @@ const PropertyDetails = () => {
                         </a>
                       </Button>
                     )}
-                    
+
                     {property.agent_email && (
                       <Button variant="outline" className="w-full h-12 text-lg rounded-xl border-2 hover:bg-secondary/5" asChild>
                         <a href={`mailto:${property.agent_email}?subject=استفسار عن ${property.title}`}>
